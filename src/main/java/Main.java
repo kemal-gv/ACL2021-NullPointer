@@ -1,18 +1,24 @@
-import org.lwjgl.glfw.GLFW;
+import cameras.Camera;
+import framerate.Timer;
+import models.Model;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL;
+import shaders.Shader;
 import textures.Texture;
+import windows.Window;
 
 public class Main {
     private static long window;
 
 
     private static final int WIDTH=1280;
-    private static final int LENGTH=800;
-
+    private static final int HEIGHT =800;
+    private static final int FPS=60;
     public static void main(String[] args) {
         //On initialise GLFW
         if(!glfwInit()) {
@@ -22,50 +28,166 @@ public class Main {
         }
 
         glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
-        //Creation de la fenetre
-        window=glfwCreateWindow(WIDTH,LENGTH,"NullPointer'",0,0);
 
-        if(window==0) {
-            throw new IllegalStateException("Erreur dans la création de la fenêtre");
-        }
+
+        Window win= new Window();
+        win.setSize(WIDTH,HEIGHT);
+       // win.setFullscreen(true);
+        win.createWindow("Game");
+
+        //Creation de la fenetre
+      //  window=glfwCreateWindow(WIDTH, HEIGHT,"NullPointer'",0,0);
+       // glfwShowWindow(window);
+
+        //glfwMakeContextCurrent(window);
+        //if(window==0) {
+          //  throw new IllegalStateException("Erreur dans la création de la fenêtre");
+       // }
 
         //
-        GLFWVidMode videoMode= glfwGetVideoMode(glfwGetPrimaryMonitor());
+        //GLFWVidMode videoMode= glfwGetVideoMode(glfwGetPrimaryMonitor());
         //On place la fenêtre au milieu
-        glfwSetWindowPos(window,(videoMode.width() - WIDTH)/2, (videoMode.height() - LENGTH)/2);
+        //glfwSetWindowPos(window,(videoMode.width() - WIDTH)/2, (videoMode.height() - HEIGHT)/2);
 
-        glfwShowWindow(window);
+     //   glfwShowWindow(window);
 
         //Create a context
-        glfwMakeContextCurrent(window);//I need a context to display graphics
+        //glfwMakeContextCurrent(window);//I need a context to display graphics
         GL.createCapabilities();
+
+        //Camera
+        Camera camera= new Camera(win.getWidth(),win.getWidth());
+
+
+        //
 
         glEnable(GL_TEXTURE_2D);
         //On doit creer les textures ici après le context
 
-        Texture tex=new Texture(("groundEarth_checkered.png"));
+       // Texture tex=new Texture(("groundEarth_checkered.png"));
+       // Texture tex=new Texture(("groundExit.png"));
+          Texture tex=new Texture(("test.png"));
+
+        float[] vertices=new float[]{
+            -0.5f,0.5f,0,//TOP LEFT     0
+            0.5f,0.5f,0,//TOP RIGHT     1
+            0.5f,-0.5f,0,//BOTTOM RIGHT 2
+
+            // -0.5f,0.5f,0,//TOP LEFT
+           // 0.5f,-0.5f,0,//BOTTOM RIGHT
+            -0.5f,-0.5f,0//BOTTOM LEFT  3
+
+        };
+
+
+        float[] texture=new float[]{
+                0,0,
+                1,0,
+                1,1,
+               // 0,0,
+                // 1,1,
+                0,1
+
+        };
+
+
+        int[] indices = new int[]{
+          0,1,2,
+          2,3,0
+        };
+
+        //Creation d'un shader
+        Shader shader= new Shader("shader");
 
 
 
-        while(!glfwWindowShouldClose(window)){
-            //Test input
-            //testInput();
-            //Fin test input
 
-            //Update tant que la fenetre ne veut pas se fermer
-            glfwPollEvents();
+        Model model=new Model(vertices,texture,indices);
 
-            glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
+       // Matrix4f projection= new Matrix4f().ortho2D(-WIDTH/2,WIDTH/2, -HEIGHT /2,HEIGHT /2);
+        Matrix4f scale = new Matrix4f()
+                //.translate(new Vector3f(100,0,0))//Pour modifier la position de notre image
+                .scale(64);
+        Matrix4f target = new Matrix4f();
 
-            tex.bind();
-
-
-            testSquare();
+       // projection.mul(scale,target);//Projection*scale = target
 
 
+        //Test camera position
+        //camera.setPosition(new Vector3f(-100,0,0));//pr mettre l'image de nouvea au centre (quand on a fait le translate plus haut)
+
+        //Gérer les fps
+        double frameCap = 1.0/FPS;// X sec / Nb fps ici 60images par 1 seconde   cb on veut de fps
+        double time = Timer.getTime();
+        double unprocessed = 0 ;
+
+        double frameTime=0;
+        int frames=0;
 
 
-            glfwSwapBuffers(window);
+
+
+
+
+       // while(!glfwWindowShouldClose(window)){
+        while(!win.shouldClose()){
+            boolean canRender=false;
+            double time2=Timer.getTime();
+            double passed = time2 - time;
+            unprocessed+=passed;//Temps que le jeu n'a pas ete traité
+
+            frameTime+=passed;
+
+
+            time = time2;//To avoid the game goes exponentially faster
+
+            while(unprocessed >= frameCap){
+
+
+                if(glfwGetKey(win.getWindow(),GLFW_KEY_ESCAPE)==GL_TRUE){
+                    glfwSetWindowShouldClose(win.getWindow(),true);
+                }
+
+                //Tout ce qui n'a rien a voir avec le rendering est ici
+
+                unprocessed-=frameCap;
+                canRender=true;
+
+                target=scale;
+
+                //Test input
+                //testInput();
+                //Fin test input
+
+                //Update tant que la fenetre ne veut pas se fermer
+                glfwPollEvents();
+
+                if(frameTime >= 1.0){//Every secon we print how much frame we have
+                    frameTime=0;
+                    System.out.println("FPS : "+frames);
+                    frames=0;
+
+                }
+
+            }
+
+
+
+            if(canRender){
+                glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
+                tex.bind(0);
+
+                shader.bind();
+                // shader.setUniform("sampler",0);
+                shader.setUniform("projection",camera.getProjection().mul(target));
+                model.render();
+
+                // testSquare();
+                win.swapBuffers();
+                frames++;
+
+            }
+
         }
 
         //Clean glfw

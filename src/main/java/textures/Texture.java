@@ -7,19 +7,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import static org.lwjgl.opengl.GL13.*;
 
-import static org.lwjgl.opengl.GL11C.*;
 
 public class Texture {
     private int id;
     private int width;
     private int height;
 
+
+
     public Texture(String filename){
         BufferedImage bi;
         try{
             String url= Texture.class.getClassLoader().getResource(filename).getFile();
-            System.out.println("url = "+url);
             bi= ImageIO.read(new File(url));
             width=bi.getWidth();
             height=bi.getHeight();
@@ -59,7 +60,11 @@ public class Texture {
         }
     }
 
-    public void bind(){
-        glBindTexture(GL_TEXTURE_2D,id);
+
+    public void bind(int sampler){
+        if(sampler>=0 && sampler<=31) {
+            glActiveTexture(GL_TEXTURE0 + sampler);
+            glBindTexture(GL_TEXTURE_2D, id);
+        }
     }
 }
