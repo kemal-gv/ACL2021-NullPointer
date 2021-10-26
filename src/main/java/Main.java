@@ -1,4 +1,7 @@
+import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
+import labyrinthe.World;
+import org.joml.Vector3f;
 import render.Camera;
 import framerate.Timer;
 import models.Model;
@@ -64,9 +67,13 @@ public class Main {
         glEnable(GL_TEXTURE_2D);
         //On doit creer les textures ici après le context
 
-       // Texture tex=new Texture(("groundEarth_checkered.png"));
+        World world = new World();
+        world.setTile(Tile.testTile2,0,0);
+        world.setTile(Tile.testTile2,1,1);
+
+        // Texture tex=new Texture(("groundEarth_checkered.png"));
        // Texture tex=new Texture(("groundExit.png"));
-          Texture tex=new Texture(("test.png"));
+        Texture tex=new Texture(("test.png"));
 
         //Creation d'un shader
         Shader shader= new Shader("shader");
@@ -123,6 +130,19 @@ public class Main {
                    glfwSetWindowShouldClose(win.getWindow(),true);
                 }
 
+                if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
+                    camera.getPosition().sub(new Vector3f(-10,0,0));
+                }
+                if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
+                    camera.getPosition().sub(new Vector3f(10,0,0));
+                }
+                if(win.getInput().isKeyDown(GLFW_KEY_UP)){
+                    camera.getPosition().sub(new Vector3f(0,10,0));
+                }
+                if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
+                    camera.getPosition().sub(new Vector3f(0,-10,0));
+                }
+
                 //Tout ce qui n'a rien a voir avec le rendering est ici
 
                 unprocessed-=frameCap;
@@ -136,6 +156,9 @@ public class Main {
 
                 //Update tant que la fenetre ne veut pas se fermer
                 //glfwPollEvents();
+
+                world.correctCamera(camera,win);
+
                 win.update();
                 if(frameTime >= 1.0){//Every secon we print how much frame we have
                     frameTime=0;
@@ -161,12 +184,8 @@ public class Main {
 
                 // testSquare();
 
-                //Renderin tile
-                for(int i=0;i<20;i++){
-                    for(int j=0;j<10;j++){
-                        tileRenderer.renderTile(0,i,j,shader,scale,camera);
-                    }
-                }
+                //Rendering tile
+                world.render(tileRenderer,shader,camera);
 
 
                 win.swapBuffers();

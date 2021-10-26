@@ -6,6 +6,7 @@ public class Tile {
 
    // public static final Tile testTile = new Tile(0,"groundEarth_checkered");
     public static final Tile testTile = new Tile(0,"floor_1");
+    public static final Tile testTile2 = new Tile(1,"floor_2");
 
 
     private int id;
