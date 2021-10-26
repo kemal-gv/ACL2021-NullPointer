@@ -1,8 +1,7 @@
-package shaders;
+package render;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
-import textures.Texture;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -101,6 +100,11 @@ public class Shader {
         if(location != -1){
             glUniformMatrix4fv(location,false,buffer);
         }
+    }
+
+    public void setUniform(String uniformName, int value) {
+        int location = glGetUniformLocation(program, uniformName);
+        if (location != -1) glUniform1i(location, value);
     }
 }
 

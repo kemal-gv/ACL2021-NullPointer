@@ -1,15 +1,14 @@
-import cameras.Camera;
+import labyrinthe.TileRenderer;
+import render.Camera;
 import framerate.Timer;
 import models.Model;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFWVidMode;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL;
-import shaders.Shader;
-import textures.Texture;
+import render.Shader;
+import render.Texture;
 import windows.Window;
 
 public class Main {
@@ -20,6 +19,7 @@ public class Main {
     private static final int HEIGHT =800;
     private static final int FPS=60;
     public static void main(String[] args) {
+        Window.setCallBacks();
         //On initialise GLFW
         if(!glfwInit()) {
             //throw new IllegalStateException("Erreur dans l'initialisation de  GLFW");
@@ -68,46 +68,17 @@ public class Main {
        // Texture tex=new Texture(("groundExit.png"));
           Texture tex=new Texture(("test.png"));
 
-        float[] vertices=new float[]{
-            -0.5f,0.5f,0,//TOP LEFT     0
-            0.5f,0.5f,0,//TOP RIGHT     1
-            0.5f,-0.5f,0,//BOTTOM RIGHT 2
-
-            // -0.5f,0.5f,0,//TOP LEFT
-           // 0.5f,-0.5f,0,//BOTTOM RIGHT
-            -0.5f,-0.5f,0//BOTTOM LEFT  3
-
-        };
-
-
-        float[] texture=new float[]{
-                0,0,
-                1,0,
-                1,1,
-               // 0,0,
-                // 1,1,
-                0,1
-
-        };
-
-
-        int[] indices = new int[]{
-          0,1,2,
-          2,3,0
-        };
-
         //Creation d'un shader
         Shader shader= new Shader("shader");
 
 
 
 
-        Model model=new Model(vertices,texture,indices);
 
        // Matrix4f projection= new Matrix4f().ortho2D(-WIDTH/2,WIDTH/2, -HEIGHT /2,HEIGHT /2);
         Matrix4f scale = new Matrix4f()
                 //.translate(new Vector3f(100,0,0))//Pour modifier la position de notre image
-                .scale(64);
+                .scale(16);
         Matrix4f target = new Matrix4f();
 
        // projection.mul(scale,target);//Projection*scale = target
@@ -125,11 +96,14 @@ public class Main {
         int frames=0;
 
 
+        TileRenderer tileRenderer=new TileRenderer();
 
 
 
 
-       // while(!glfwWindowShouldClose(window)){
+
+
+        // while(!glfwWindowShouldClose(window)){
         while(!win.shouldClose()){
             boolean canRender=false;
             double time2=Timer.getTime();
@@ -144,8 +118,9 @@ public class Main {
             while(unprocessed >= frameCap){
 
 
-                if(glfwGetKey(win.getWindow(),GLFW_KEY_ESCAPE)==GL_TRUE){
-                    glfwSetWindowShouldClose(win.getWindow(),true);
+                if(win.getInput().isKeyPressed(GLFW_KEY_ESCAPE)){
+                //if(win.getInput().isMouseButtonDown(0)){//0=left click 1=right click 2=scroll button
+                   glfwSetWindowShouldClose(win.getWindow(),true);
                 }
 
                 //Tout ce qui n'a rien a voir avec le rendering est ici
@@ -160,8 +135,8 @@ public class Main {
                 //Fin test input
 
                 //Update tant que la fenetre ne veut pas se fermer
-                glfwPollEvents();
-
+                //glfwPollEvents();
+                win.update();
                 if(frameTime >= 1.0){//Every secon we print how much frame we have
                     frameTime=0;
                     System.out.println("FPS : "+frames);
@@ -177,12 +152,23 @@ public class Main {
                 glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
                 tex.bind(0);
 
-                shader.bind();
+
+
+                //shader.bind();
                 // shader.setUniform("sampler",0);
-                shader.setUniform("projection",camera.getProjection().mul(target));
-                model.render();
+                //shader.setUniform("projection",camera.getProjection().mul(target));
+                //model.render();
 
                 // testSquare();
+
+                //Renderin tile
+                for(int i=0;i<20;i++){
+                    for(int j=0;j<10;j++){
+                        tileRenderer.renderTile(0,i,j,shader,scale,camera);
+                    }
+                }
+
+
                 win.swapBuffers();
                 frames++;
 

@@ -1,5 +1,7 @@
 package windows;
 
+import inputs.Input;
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -7,15 +9,26 @@ import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 
 public class Window {
     private static long window;
+    private Input input;
 
     private boolean fullscreen=false;
     private int width,height;
+
+    public static void setCallBacks(){
+        glfwSetErrorCallback(new GLFWErrorCallback() {
+            @Override
+            public void invoke(int error, long description) {
+                throw new IllegalStateException(GLFWErrorCallback.getDescription(description));
+            }
+        });
+    }
 
     public Window(){
         setSize(640,480);
     }
 
     public void createWindow(String title){
+
         //FULL SCREEN =  window = glfwCreateWindow(width,height,title,glfwGetPrimaryMonitor(),0);
 
         //If fullscreen = true alors glfwGetPrimaryMonitor sinon 0
@@ -35,6 +48,7 @@ public class Window {
 
         glfwMakeContextCurrent(window);
 
+        input = new Input(window);
 
 
     }
@@ -70,5 +84,14 @@ public class Window {
 
     public long getWindow(){
         return window;
+    }
+
+    public Input getInput(){
+        return input;
+    }
+
+    public void update(){
+        input.update();
+        glfwPollEvents();
     }
 }

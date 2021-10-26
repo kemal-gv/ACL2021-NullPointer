@@ -1,4 +1,4 @@
-package textures;
+package render;
 
 import org.lwjgl.BufferUtils;
 
