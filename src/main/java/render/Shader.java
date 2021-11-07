@@ -15,9 +15,11 @@ public class Shader {
     private int program;
     private int verticeShader;//Vertice shader
     private int fragmentShader;//Fragment shader
-
+    private FloatBuffer floatBuffer;
 
     public Shader(String filename){
+        floatBuffer=BufferUtils.createFloatBuffer(16);
+
         program=glCreateProgram();
         verticeShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -93,7 +95,7 @@ public class Shader {
 
     public void setUniform(String name, Matrix4f value){
         int location = glGetUniformLocation(program,name);
-        FloatBuffer buffer= BufferUtils.createFloatBuffer(16);//4x4 of data (a matrix)
+        FloatBuffer buffer=floatBuffer;//= BufferUtils.createFloatBuffer(16);//4x4 of data (a matrix)
         value.get(buffer);
 
 

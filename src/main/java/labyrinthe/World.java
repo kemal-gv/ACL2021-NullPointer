@@ -17,7 +17,7 @@ public class World {
     public World(){
         width=64;
         height=64;
-        scale=16;
+        scale=32;
         tiles=new int[width*height];
 
         world=new Matrix4f().setTranslation(new Vector3f(0));
@@ -45,12 +45,13 @@ public class World {
         }
 
 
-        if(pos.y <  (win.getHeight()/2) - scale){
-            pos.y= (win.getHeight()/2) - scale;
+        if(pos.y <  (win.getHeight()/2)+314 ){
+            pos.y= (win.getHeight())-(scale*3)-40 ;
         }
-        if(pos.y > h- (win.getHeight()/2)-scale){
-            pos.y=h- (win.getHeight()/2)-scale ;
+        if(pos.y > h- (win.getHeight()/2)-324-(scale*2)){
+            pos.y=h- (win.getHeight())+(scale*2) ;
         }
+
 
     }
 

@@ -18,8 +18,8 @@ public class Main {
     private static long window;
 
 
-    private static final int WIDTH=1280;
-    private static final int HEIGHT =800;
+    private static final int WIDTH=1600;
+    private static final int HEIGHT =900;
     private static final int FPS=60;
     public static void main(String[] args) {
         Window.setCallBacks();
@@ -68,8 +68,8 @@ public class Main {
         //On doit creer les textures ici après le context
 
         World world = new World();
-        world.setTile(Tile.testTile2,0,0);
-        world.setTile(Tile.testTile2,1,1);
+        world.setTile(Tile.testTile2,0,63);
+
 
         // Texture tex=new Texture(("groundEarth_checkered.png"));
        // Texture tex=new Texture(("groundExit.png"));
