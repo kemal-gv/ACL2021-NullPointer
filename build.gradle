@@ -3,23 +3,21 @@ plugins {
     id 'application'
 }
 
-mainClassName = "HelloWorld"
-group 'org.example'
-version '1.0-SNAPSHOT'
+import org.apache.tools.ant.taskdefs.condition.Os
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    project.ext.lwjglNatives = "natives-windows"
+}
+else{
+    project.ext.lwjglNatives = "natives-linux"
+}
+
+project.ext.jomlVersion = "1.10.2"
+project.ext.lwjglVersion = "3.2.3"
 
 repositories {
     mavenCentral()
 }
-
-
-dependencies {
-    implementation group: 'junit', name: 'junit', version: '4.12'
-}
-
-
-project.ext.lwjglVersion = "3.2.3"
-project.ext.jomlVersion = "1.10.2"
-project.ext.lwjglNatives = "natives-windows"
 
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
@@ -47,7 +45,6 @@ dependencies {
     implementation "org.lwjgl:lwjgl-opengles"
     implementation "org.lwjgl:lwjgl-openvr"
     implementation "org.lwjgl:lwjgl-opus"
-    implementation "org.lwjgl:lwjgl-ovr"
     implementation "org.lwjgl:lwjgl-par"
     implementation "org.lwjgl:lwjgl-remotery"
     implementation "org.lwjgl:lwjgl-rpmalloc"
@@ -80,7 +77,6 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengles::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-openvr::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-opus::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-ovr::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-par::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-remotery::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-rpmalloc::$lwjglNatives"
