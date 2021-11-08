@@ -13,7 +13,12 @@ public class TileRenderer {
     private HashMap<String , Texture> tileTexture;
     private Model model;
 
+    private GestionnaireTile gestionnaireTile;
+
     public TileRenderer(){
+         this.gestionnaireTile=new GestionnaireTile();
+
+
         tileTexture=new HashMap<>();
 
         float[] vertices=new float[]{
@@ -46,11 +51,11 @@ public class TileRenderer {
          model=new Model(vertices,texture,indices);
 
 
-         for (int i=0;i<Tile.tiles.length;i++){
-             if(Tile.tiles[i] != null) {
-                 if (!tileTexture.containsKey(Tile.tiles[i].getTexture())) {
+         for (int i=0;i<gestionnaireTile.getNbTiles();i++){
+             if(gestionnaireTile.getTile(i) != null) {
+                 if (!tileTexture.containsKey(gestionnaireTile.getTile(i).getTexture())) {
                      //Si il y a pas la texture on l'ajoute
-                     String txt = Tile.tiles[i].getTexture();
+                     String txt = gestionnaireTile.getTile(i).getTexture();
                      tileTexture.put(txt, new Texture(txt + ".png"));
                  }
              }
@@ -63,8 +68,8 @@ public class TileRenderer {
 
     public void renderTile(int id, int x, int y, Shader sh, Matrix4f world, Camera cam){
         sh.bind();
-        if(tileTexture.containsKey(Tile.tiles[id].getTexture())){
-            tileTexture.get(Tile.tiles[id].getTexture()).bind(0);
+        if(tileTexture.containsKey(gestionnaireTile.getTile(id).getTexture())){
+            tileTexture.get(gestionnaireTile.getTile(id).getTexture()).bind(0);
         }
 
         Matrix4f tilePosition=new Matrix4f().translate(new Vector3f(x*2,y*2,0) );
@@ -79,4 +84,9 @@ public class TileRenderer {
 
         model.render();
     }
+
+    public GestionnaireTile getGestionnaireTile(){
+        return gestionnaireTile;
+    }
 }
+

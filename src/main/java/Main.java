@@ -1,3 +1,4 @@
+import labyrinthe.GestionnaireTile;
 import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
 import labyrinthe.World;
@@ -66,10 +67,25 @@ public class Main {
 
         glEnable(GL_TEXTURE_2D);
         //On doit creer les textures ici après le context
+        TileRenderer tileRenderer=new TileRenderer();
 
-        World world = new World();
-        world.setTile(Tile.testTile2,0,63);
+        World world = new World("level1");
+        //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
+
+        //Test setup world
+       // //Coin haut gauche
+        //world.setTile(tileRenderer.getGestionnaireTile().getTile(4),0,0);
+
+        for(int i=0;i<20;i++){
+           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,0);
+         //   world.setTile(tileRenderer.getGestionnaireTile().getTile(8),0,i);
+           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),19,i);
+           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,19);
+
+        }
+
+        //world.setTile(tileRenderer.getGestionnaireTile().getTile(2),0,19);
 
         // Texture tex=new Texture(("groundEarth_checkered.png"));
        // Texture tex=new Texture(("groundExit.png"));
@@ -103,7 +119,7 @@ public class Main {
         int frames=0;
 
 
-        TileRenderer tileRenderer=new TileRenderer();
+
 
 
 
