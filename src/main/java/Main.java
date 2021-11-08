@@ -2,7 +2,10 @@ import labyrinthe.GestionnaireTile;
 import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
 import labyrinthe.World;
+import models.Joueur;
+import models.Transform;
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
 import render.Camera;
 import framerate.Timer;
 import models.Model;
@@ -10,10 +13,17 @@ import org.joml.Matrix4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+
 import org.lwjgl.opengl.GL;
 import render.Shader;
 import render.Texture;
 import windows.Window;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class Main {
     private static long window;
@@ -35,6 +45,8 @@ public class Main {
 
 
         Window win= new Window();
+
+
         win.setSize(WIDTH,HEIGHT);
        // win.setFullscreen(true);
         win.createWindow("Game");
@@ -70,6 +82,7 @@ public class Main {
         TileRenderer tileRenderer=new TileRenderer();
 
         World world = new World("level1");
+        Joueur joueur = new Joueur(100);
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
 
@@ -173,6 +186,8 @@ public class Main {
                 //Update tant que la fenetre ne veut pas se fermer
                 //glfwPollEvents();
 
+                //joueur.update((float) frameCap, win, camera, world);
+
                 world.correctCamera(camera,win);
 
                 win.update();
@@ -201,7 +216,9 @@ public class Main {
                 // testSquare();
 
                 //Rendering tile
+
                 world.render(tileRenderer,shader,camera);
+                joueur.render(shader, camera);
 
 
                 win.swapBuffers();
@@ -257,6 +274,5 @@ public class Main {
         glEnd();
         //Fin test square
     }
-
 
 }
