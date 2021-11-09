@@ -159,6 +159,7 @@ public class Main {
                    glfwSetWindowShouldClose(win.getWindow(),true);
                 }
 
+                /*
                 if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
                     camera.getPosition().sub(new Vector3f(-10,0,0));
                 }
@@ -171,6 +172,8 @@ public class Main {
                 if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
                     camera.getPosition().sub(new Vector3f(0,-10,0));
                 }
+
+                 */
 
                 //Tout ce qui n'a rien a voir avec le rendering est ici
 
@@ -187,10 +190,15 @@ public class Main {
                 //glfwPollEvents();
 
                 //joueur.update((float) frameCap, win, camera, world);
+                joueur.update((float)frameCap,win,camera,world);
 
                 world.correctCamera(camera,win);
 
+
+
                 win.update();
+
+
                 if(frameTime >= 1.0){//Every secon we print how much frame we have
                     frameTime=0;
                     System.out.println("FPS : "+frames);

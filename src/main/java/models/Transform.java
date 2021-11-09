@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Transform {
-    private Vector3f pos;
+    public Vector3f pos;
     public Vector3f scale;
 
     public Transform(){

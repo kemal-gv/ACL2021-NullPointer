@@ -137,4 +137,8 @@ public class World {
         tiles[x + y *width]=tile.getId();
     }
 
+    public int getScale(){
+        return scale;
+    }
+
 }

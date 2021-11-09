@@ -7,6 +7,9 @@ import render.Shader;
 import render.Texture;
 import windows.Window;
 
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+
 public class Joueur {
     private int vie;
     private int attaque;
@@ -58,8 +61,22 @@ public class Joueur {
         posY = y;
     }
 
-    public void update(float delta, Window window, Camera camera, World world){
-
+    public void update(float delta, Window win, Camera camera, World world){
+        if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
+            tr.pos.add(new Vector3f(-10*delta,0,0));
+        }
+        if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
+            tr.pos.add(new Vector3f(10*delta,0,0));
+        }
+        if(win.getInput().isKeyDown(GLFW_KEY_UP)){
+            tr.pos.add(new Vector3f(0,10*delta,0));
+        }
+        if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
+            tr.pos.add(new Vector3f(0,-10*delta,0));
+        }
+        System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
+        //if (posX>=camera.getPosition().x)
+            camera.setPosition(tr.pos.mul(-world.getScale(),new Vector3f()));
     }
 
     public void render(Shader shader, Camera camera){
