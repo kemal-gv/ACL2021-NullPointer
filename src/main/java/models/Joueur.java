@@ -74,6 +74,9 @@ public class Joueur {
         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
             tr.pos.add(new Vector3f(0,-10*delta,0));
         }
+        if(win.getInput().isKeyDown(GLFW_KEY_D)){
+            setVie(vie-1);
+        }
         System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
             camera.setPosition(tr.pos.mul(-world.getScale(),new Vector3f()));
@@ -85,6 +88,15 @@ public class Joueur {
         shader.setUniform("projection", tr.getProjection(camera.getProjection()));
         texture.bind(0);
         model.render();
+
+    }
+
+    public int getVie(){
+        return this.vie;
+    }
+
+    public void setVie(int vie){
+        this.vie = vie;
     }
 
 

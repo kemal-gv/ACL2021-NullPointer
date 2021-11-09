@@ -1,29 +1,18 @@
-import labyrinthe.GestionnaireTile;
-import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
 import labyrinthe.World;
 import models.Joueur;
-import models.Transform;
-import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
+import models.HealthBar;
 import render.Camera;
 import framerate.Timer;
-import models.Model;
 import org.joml.Matrix4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 
 import org.lwjgl.opengl.GL;
 import render.Shader;
 import render.Texture;
 import windows.Window;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 public class Main {
     private static long window;
@@ -83,6 +72,7 @@ public class Main {
 
         World world = new World("level1");
         Joueur joueur = new Joueur(100);
+        HealthBar hb = new HealthBar(joueur.getVie());
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
 
@@ -191,7 +181,11 @@ public class Main {
 
                 //joueur.update((float) frameCap, win, camera, world);
                 joueur.update((float)frameCap,win,camera,world);
+                joueur.setVie(joueur.getVie());
 
+                //vie du joueur infèrieur à 0
+                if (joueur.getVie()>=0)
+                    hb.update(joueur.getVie());
                 world.correctCamera(camera,win);
 
 
@@ -227,7 +221,7 @@ public class Main {
 
                 world.render(tileRenderer,shader,camera);
                 joueur.render(shader, camera);
-
+                hb.render(shader);
 
                 win.swapBuffers();
                 frames++;
