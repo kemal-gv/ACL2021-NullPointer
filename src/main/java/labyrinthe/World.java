@@ -52,6 +52,8 @@ public class World {
 
                 for(int x=0;x<width;x++){
                     int red=(colorTileSheet[x+y*width] >> 16) & 0xFF;
+                    int green=(colorTileSheet[x+y*width] >> 8) & 0xFF;
+                    int blue=(colorTileSheet[x + y * width]) & 0xFF;
 
                     Tile t;
                     try {
@@ -132,7 +134,7 @@ public class World {
     }
 
     public void setTile(Tile tile, int x,int y){
-        tiles[x + y ]=tile.getId();
+        tiles[x + y *width]=tile.getId();
     }
 
 }
