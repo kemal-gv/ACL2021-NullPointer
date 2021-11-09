@@ -11,24 +11,26 @@ public class GestionnaireTile {
          Tile floor2 = new Tile(1,"floor_2");
 
 
-        ajoutTiles("floor_1",0);
-        ajoutTiles("floor_2",1);
+        ajoutTiles("floor_1",0,false);
+        ajoutTiles("floor_2",1,false);
 
 
 
         //Set walls
         for(int i=0;i<7;i++){
-            ajoutTiles("assets/walls/wall_"+(i+1),i+2);
+            ajoutTiles("assets/walls/wall_"+(i+1),i+2,true);
         }
 
     }
 
-    public void ajoutTiles(String nom,int id){
+    public void ajoutTiles(String nom,int id,boolean solid){
         if(tiles[id] != null){
             throw new IllegalStateException("Tile n°"+id+" est deja utilise");
         }
 
-        tiles[id]=new Tile(id,nom);
+        Tile res=new Tile(id,nom);
+        if(solid) res.setSolid();
+        tiles[id]=res;
     }
 
     public Tile getTile(int i) {

@@ -1,6 +1,9 @@
 package models;
 
+import collision.AABB;
+import collision.Collision;
 import labyrinthe.World;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Camera;
 import render.Shader;
@@ -18,6 +21,8 @@ public class Joueur {
     private Model model;
     private Texture texture;
     private models.Transform tr;
+
+    private AABB boundingBox;
 
     public Joueur(int vie){
         this.vie = vie;
@@ -52,8 +57,13 @@ public class Joueur {
         model=new Model(vertices,texture,indices);
         this.texture = new Texture("test.png");
 
+
+        AABB box=null;
+
         tr = new Transform();
         tr.scale = new Vector3f(16,16,1);
+        boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
+
     }
 
     public void setPos(int x, int y) {
@@ -74,9 +84,44 @@ public class Joueur {
         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
             tr.pos.add(new Vector3f(0,-10*delta,0));
         }
-        System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
+
+        boundingBox.getCenter().set(tr.pos.x,tr.pos.y);
+
+        AABB[] boxes=new AABB[25];
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                boxes[i+j*5]=world.getTileBoundingBox((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
+            }
+        }
+
+        AABB box=null;
+        for(int i=0;i<boxes.length;i++){
+            if(boxes[i]!=null){
+                if(box==null){
+                    box=boxes[i];
+                }
+                Vector2f length1 = box.getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
+                Vector2f length2 = boxes[i].getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
+
+                if(length1.lengthSquared() > length2.lengthSquared()){
+                    box = boxes[i];
+                }else{
+
+                }
+            }
+        }
+
+        if(box!=null) {
+            Collision data = boundingBox.getCollision(box);
+            System.out.println("On teste la collision");
+            if (data.isIntersecting) {
+                boundingBox.correctPosition(box, data);
+                tr.pos.set(boundingBox.getCenter(),0);
+            }
+        }
+        //System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
-            camera.setPosition(tr.pos.mul(-world.getScale(),new Vector3f()));
+            camera.setPosition(tr.pos.mul(-16,new Vector3f()));
     }
 
     public void render(Shader shader, Camera camera){

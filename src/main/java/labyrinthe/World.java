@@ -1,6 +1,8 @@
 package labyrinthe;
 
+import collision.AABB;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Camera;
 import render.Shader;
@@ -18,7 +20,7 @@ public class World {
     private int width;
     private int height;
     private Matrix4f world;
-   // private AABB[] boundingBoxes;
+   private AABB[] boundingBoxes;
     private byte[] tilesByte;
     private int scale;
 
@@ -30,6 +32,8 @@ public class World {
 
         world=new Matrix4f().setTranslation(new Vector3f(0));
         world.scale(scale);
+
+        boundingBoxes=new AABB[width*height];
 
 
         try {
@@ -58,8 +62,9 @@ public class World {
                     Tile t;
                     try {
                         t=GestionnaireTile.tiles[red];
+
                         if(red!=0){
-                            System.out.println("RED = "+red);
+                            //System.out.println("RED = "+red);
                         }
 
                     } catch(ArrayIndexOutOfBoundsException e){
@@ -133,12 +138,33 @@ public class World {
 
     }
 
+
     public void setTile(Tile tile, int x,int y){
         tiles[x + y *width]=tile.getId();
+        if(tile.isSolid()){
+            boundingBoxes[x+y*width]=new AABB(new Vector2f(x*2,-y*2),new Vector2f(1,1));
+        }else{
+            boundingBoxes[x+y*width]=null;
+        }
     }
 
     public int getScale(){
         return scale;
     }
 
+    public Tile getTile(int x,int y){
+        try {
+            return GestionnaireTile.tiles[tiles[x + y * width]];
+        }catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+    public AABB getTileBoundingBox(int x,int y){
+        try {
+            return boundingBoxes[x + y * width];
+        }catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
 }

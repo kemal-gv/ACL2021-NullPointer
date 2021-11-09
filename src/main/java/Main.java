@@ -1,9 +1,11 @@
+import collision.AABB;
 import labyrinthe.GestionnaireTile;
 import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
 import labyrinthe.World;
 import models.Joueur;
 import models.Transform;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import render.Camera;
@@ -34,6 +36,13 @@ public class Main {
     private static final int FPS=60;
     public static void main(String[] args) {
         Window.setCallBacks();
+
+        AABB box1= new AABB(new Vector2f(0,0),new Vector2f(1,1));
+        AABB box2= new AABB(new Vector2f(1,0),new Vector2f(1,1));
+
+
+
+
         //On initialise GLFW
         if(!glfwInit()) {
             //throw new IllegalStateException("Erreur dans l'initialisation de  GLFW");
@@ -83,7 +92,8 @@ public class Main {
 
         World world = new World("level1");
         Joueur joueur = new Joueur(100);
-        //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
+       // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,0);
+
 
 
         //Test setup world
@@ -201,7 +211,7 @@ public class Main {
 
                 if(frameTime >= 1.0){//Every secon we print how much frame we have
                     frameTime=0;
-                    System.out.println("FPS : "+frames);
+                    //System.out.println("FPS : "+frames);
                     frames=0;
 
                 }
