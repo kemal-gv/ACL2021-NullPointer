@@ -2,9 +2,9 @@ package models;
 
 import collision.AABB;
 import collision.Collision;
-import labyrinthe.Labyrinthe;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import render.Animation;
 import render.Camera;
 import render.Shader;
 import render.Texture;
@@ -16,10 +16,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 public class Joueur {
     private int vie;
     private int attaque;
-    private int posX;
-    private int posY;
+    private float posX;
+    private float posY;
     private Model model;
-    private Texture texture;
+    private Animation texture;
     private models.Transform tr;
 
     private AABB boundingBox;
@@ -55,7 +55,7 @@ public class Joueur {
                 2,3,0
         };
         model=new Model(vertices,texture,indices);
-        this.texture = new Texture("test.png");
+        this.texture = new Animation(2,10,"joueur");
 
 
         AABB box=null;
@@ -65,13 +65,15 @@ public class Joueur {
         boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
 
     }
-
     public void setPos(int x, int y) {
-        posX = x;
-        posY = y;
+        tr.pos.x = x;
+        tr.pos.y = y;
+        posX = tr.pos.x;
+        posY = tr.pos.y;
     }
 
-    public void update(float delta, Window win, Camera camera, Labyrinthe world){
+
+    public void deplacement(float delta, Window win, Camera camera, Labyrinthe world){
         if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
             tr.pos.add(new Vector3f(-10*delta,0,0));
         }
@@ -84,7 +86,8 @@ public class Joueur {
         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
             tr.pos.add(new Vector3f(0,-10*delta,0));
         }
-
+        posX = tr.pos.x;
+        posY = tr.pos.y;
         boundingBox.getCenter().set(tr.pos.x,tr.pos.y);
 
         AABB[] boxes=new AABB[25];
@@ -120,7 +123,7 @@ public class Joueur {
         }
         //System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
-            camera.setPosition(tr.pos.mul(-16,new Vector3f()));
+            camera.setPosition(tr.pos.mul(-world.getScale()/2f/*-16*/,new Vector3f()));
     }
 
     public void render(Shader shader, Camera camera){
@@ -132,4 +135,11 @@ public class Joueur {
     }
 
 
+    public float getPosX() {
+        return posX;
+    }
+
+    public float getPosY() {
+        return posY;
+    }
 }

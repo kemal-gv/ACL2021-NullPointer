@@ -1,6 +1,9 @@
-package labyrinthe;
+package models;
 
 import collision.AABB;
+import tiles.GestionnaireTile;
+import tiles.Tile;
+import tiles.TileRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -59,7 +62,7 @@ public class Labyrinthe {
 
                     Tile t;
                     try {
-                        t=GestionnaireTile.tiles[red];
+                        t= GestionnaireTile.tiles[red];
 
                         if(red!=0){
                             //System.out.println("RED = "+red);

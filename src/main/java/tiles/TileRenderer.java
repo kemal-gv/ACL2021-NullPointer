@@ -1,4 +1,4 @@
-package labyrinthe;
+package tiles;
 
 import models.Model;
 import org.joml.Matrix4f;

@@ -1,6 +1,6 @@
 import collision.AABB;
-import labyrinthe.TileRenderer;
-import labyrinthe.Labyrinthe;
+import tiles.TileRenderer;
+import models.Labyrinthe;
 import models.Joueur;
 import org.joml.Vector2f;
 import render.Camera;
@@ -15,7 +15,7 @@ import render.Shader;
 import render.Texture;
 import windows.Window;
 
-public class Main {
+public class Game {
     private static long window;
 
 
@@ -194,7 +194,7 @@ public class Main {
                 //glfwPollEvents();
 
                 //joueur.update((float) frameCap, win, camera, world);
-                joueur.update((float)frameCap,win,camera,world);
+                joueur.deplacement((float)frameCap,win,camera,world);
 
                 world.correctCamera(camera,win);
 

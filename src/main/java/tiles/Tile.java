@@ -1,4 +1,4 @@
-package labyrinthe;
+package tiles;
 
 public class Tile {
 
