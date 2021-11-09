@@ -17,10 +17,22 @@ public class AABB {
         distance.x=Math.abs(distance.x);
         distance.y=Math.abs(distance.y);
 
-        distance.sub(halfExtent.add(box2.halfExtent),new Vector2f());
+        distance.sub(halfExtent.add(box2.halfExtent,new Vector2f()));
 
 
-        return new Collision(distance,(distance.x < 0 && distance.y < 0));
+        return new Collision(distance,(distance.x < 0 && distance.y < 0 ));
+    }
+
+    public boolean getCollisionInter(AABB box2){
+        Vector2f distance = box2.center.sub(center,new Vector2f());
+
+        distance.x=(float)Math.abs(distance.x);
+        distance.y=(float)Math.abs(distance.y);
+
+        distance.sub(halfExtent.add(box2.halfExtent,new Vector2f()));
+
+
+        return (distance.x < 0 && distance.y < 0 );
     }
 
     public Vector2f getCenter(){

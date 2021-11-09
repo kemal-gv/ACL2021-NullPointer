@@ -2,7 +2,7 @@ package models;
 
 import collision.AABB;
 import collision.Collision;
-import labyrinthe.World;
+import labyrinthe.Labyrinthe;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Camera;
@@ -71,7 +71,7 @@ public class Joueur {
         posY = y;
     }
 
-    public void update(float delta, Window win, Camera camera, World world){
+    public void update(float delta, Window win, Camera camera, Labyrinthe world){
         if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
             tr.pos.add(new Vector3f(-10*delta,0,0));
         }
@@ -90,7 +90,7 @@ public class Joueur {
         AABB[] boxes=new AABB[25];
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                boxes[i+j*5]=world.getTileBoundingBox((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
+                boxes[i+j*5]=world.verifierCollision((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
             }
         }
 
@@ -113,7 +113,6 @@ public class Joueur {
 
         if(box!=null) {
             Collision data = boundingBox.getCollision(box);
-            System.out.println("On teste la collision");
             if (data.isIntersecting) {
                 boundingBox.correctPosition(box, data);
                 tr.pos.set(boundingBox.getCenter(),0);

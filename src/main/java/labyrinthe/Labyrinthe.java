@@ -6,25 +6,23 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Camera;
 import render.Shader;
-import render.Texture;
 import windows.Window;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 
-public class World {
+public class Labyrinthe {
     private int[] tiles;
     private int width;
     private int height;
     private Matrix4f world;
-   private AABB[] boundingBoxes;
+    private AABB[] boundingBoxes;
     private byte[] tilesByte;
     private int scale;
 
-    public World(String worldMap){
+    public Labyrinthe(String worldMap){
         width=64;
         height=64;
         scale=32;
@@ -38,7 +36,7 @@ public class World {
 
         try {
 
-            String url= World.class.getClassLoader().getResource("assets/levels/"+worldMap+"_tiles.png").getFile();
+            String url= Labyrinthe.class.getClassLoader().getResource("assets/levels/"+worldMap+"_tiles.png").getFile();
 
             BufferedImage tileSheet= ImageIO.read(new File(url));
            // BufferedImage entitySheet= ImageIO.read(new File("./levels/"+world+"_entity.png"));
@@ -86,7 +84,7 @@ public class World {
     }
 
 
-    public World(){
+    public Labyrinthe(){
         width=64;
         height=64;
         scale=32;
@@ -152,7 +150,7 @@ public class World {
         return scale;
     }
 
-    public Tile getTile(int x,int y){
+    public Tile getElementPlateau(int x,int y){
         try {
             return GestionnaireTile.tiles[tiles[x + y * width]];
         }catch (ArrayIndexOutOfBoundsException e){
@@ -160,7 +158,7 @@ public class World {
         }
     }
 
-    public AABB getTileBoundingBox(int x,int y){
+    public AABB verifierCollision(int x, int y){
         try {
             return boundingBoxes[x + y * width];
         }catch (ArrayIndexOutOfBoundsException e){

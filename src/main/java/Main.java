@@ -1,31 +1,19 @@
 import collision.AABB;
-import labyrinthe.GestionnaireTile;
-import labyrinthe.Tile;
 import labyrinthe.TileRenderer;
-import labyrinthe.World;
+import labyrinthe.Labyrinthe;
 import models.Joueur;
-import models.Transform;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
 import render.Camera;
 import framerate.Timer;
-import models.Model;
 import org.joml.Matrix4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 
 import org.lwjgl.opengl.GL;
 import render.Shader;
 import render.Texture;
 import windows.Window;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 public class Main {
     private static long window;
@@ -38,8 +26,14 @@ public class Main {
         Window.setCallBacks();
 
         AABB box1= new AABB(new Vector2f(0,0),new Vector2f(1,1));
-        AABB box2= new AABB(new Vector2f(1,0),new Vector2f(1,1));
+        AABB box2= new AABB(new Vector2f(0,0),new Vector2f(1,1));
 
+        if (box1.getCollisionInter(box2)){
+            System.out.println("INTERSECTION");
+        }
+        else{
+            System.out.println("pas inters");
+        }
 
 
 
@@ -90,9 +84,9 @@ public class Main {
         //On doit creer les textures ici après le context
         TileRenderer tileRenderer=new TileRenderer();
 
-        World world = new World("level1");
+        Labyrinthe world = new Labyrinthe("level1");
         Joueur joueur = new Joueur(100);
-       // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,0);
+       world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,0);
 
 
 
