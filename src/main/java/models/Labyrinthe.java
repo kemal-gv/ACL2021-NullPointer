@@ -1,28 +1,31 @@
-package labyrinthe;
+package models;
 
+import collision.AABB;
+import tiles.GestionnaireTile;
+import tiles.Tile;
+import tiles.TileRenderer;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Camera;
 import render.Shader;
-import render.Texture;
 import windows.Window;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 
-public class World {
+public class Labyrinthe {
     private int[] tiles;
     private int width;
     private int height;
     private Matrix4f world;
-   // private AABB[] boundingBoxes;
+    private AABB[] boundingBoxes;
     private byte[] tilesByte;
     private int scale;
 
-    public World(String worldMap){
+    public Labyrinthe(String worldMap){
         width=64;
         height=64;
         scale=32;
@@ -31,10 +34,12 @@ public class World {
         world=new Matrix4f().setTranslation(new Vector3f(0));
         world.scale(scale);
 
+        boundingBoxes=new AABB[width*height];
+
 
         try {
 
-            String url= World.class.getClassLoader().getResource("assets/levels/"+worldMap+"_tiles.png").getFile();
+            String url= Labyrinthe.class.getClassLoader().getResource("assets/levels/"+worldMap+"_tiles.png").getFile();
 
             BufferedImage tileSheet= ImageIO.read(new File(url));
            // BufferedImage entitySheet= ImageIO.read(new File("./levels/"+world+"_entity.png"));
@@ -57,9 +62,10 @@ public class World {
 
                     Tile t;
                     try {
-                        t=GestionnaireTile.tiles[red];
+                        t= GestionnaireTile.tiles[red];
+
                         if(red!=0){
-                            System.out.println("RED = "+red);
+                            //System.out.println("RED = "+red);
                         }
 
                     } catch(ArrayIndexOutOfBoundsException e){
@@ -81,7 +87,7 @@ public class World {
     }
 
 
-    public World(){
+    public Labyrinthe(){
         width=64;
         height=64;
         scale=32;
@@ -133,12 +139,33 @@ public class World {
 
     }
 
+
     public void setTile(Tile tile, int x,int y){
         tiles[x + y *width]=tile.getId();
+        if(tile.isSolid()){
+            boundingBoxes[x+y*width]=new AABB(new Vector2f(x*2,-y*2),new Vector2f(1,1));
+        }else{
+            boundingBoxes[x+y*width]=null;
+        }
     }
 
     public int getScale(){
         return scale;
     }
 
+    public Tile getElementPlateau(int x,int y){
+        try {
+            return GestionnaireTile.tiles[tiles[x + y * width]];
+        }catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+    public AABB verifierCollision(int x, int y){
+        try {
+            return boundingBoxes[x + y * width];
+        }catch (ArrayIndexOutOfBoundsException e){
+            return null;
+        }
+    }
 }
