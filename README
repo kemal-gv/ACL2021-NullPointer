@@ -1,0 +1,4 @@
+Pour exécuter le projet :
+- ouvrir un terminal
+- se placer à la racine du projet
+- lancer la commande : gradle run

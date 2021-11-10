@@ -17,6 +17,8 @@ else if(Os.isFamilis(Os.FAMILY_UNIX)){
 project.ext.jomlVersion = "1.10.2"
 project.ext.lwjglVersion = "3.2.3"
 
+mainClassName = "Game"
+
 repositories {
     mavenCentral()
 }
