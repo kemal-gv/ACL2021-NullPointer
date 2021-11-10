@@ -8,8 +8,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     project.ext.lwjglNatives = "natives-windows"
 }
-else{
+else if(Os.isFamilis(Os.FAMILY_UNIX)){
     project.ext.lwjglNatives = "natives-linux"
+} else{
+    project.ext.lwjglNatives = "natives-macos"
 }
 
 project.ext.jomlVersion = "1.10.2"

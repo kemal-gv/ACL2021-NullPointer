@@ -106,8 +106,8 @@ public class Joueur {
                 if(box==null){
                     box=boxes[i];
                 }
-                Vector2f length1 = box.getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
-                Vector2f length2 = boxes[i].getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
+                Vector2f length1 = box.getCenter().sub(tr.pos.x+20,tr.pos.y,new Vector2f());
+                Vector2f length2 = boxes[i].getCenter().sub(tr.pos.x+20,tr.pos.y,new Vector2f());
 
                 if(length1.lengthSquared() > length2.lengthSquared()){
                     box = boxes[i];
@@ -120,6 +120,8 @@ public class Joueur {
         if(box!=null) {
             Collision data = boundingBox.getCollision(box);
             if (data.isIntersecting) {
+                //System.out.println("Box x:"+box.getCenter().x+" //// box y = "+box.getCenter().y);
+                //System.out.println("Joueur x "+posX+" joueur y ="+posY);
                 boundingBox.correctPosition(box, data);
                 tr.pos.set(boundingBox.getCenter(),0);
             }
