@@ -104,19 +104,9 @@ public class Game {
        // //Coin haut gauche
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(4),0,0);
 
-        for(int i=0;i<20;i++){
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,0);
-         //   world.setTile(tileRenderer.getGestionnaireTile().getTile(8),0,i);
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),19,i);
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,19);
 
-        }
 
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(2),0,19);
-
-        // Texture tex=new Texture(("groundEarth_checkered.png"));
-       // Texture tex=new Texture(("groundExit.png"));
-        Texture tex=new Texture(("test.png"));
 
         //Creation d'un shader
         Shader shader= new Shader("shader");
@@ -230,7 +220,7 @@ public class Game {
 
             if(canRender){
                 glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
-                tex.bind(0);
+
 
 
 
