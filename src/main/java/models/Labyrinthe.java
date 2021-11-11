@@ -28,7 +28,7 @@ public class Labyrinthe {
     public Labyrinthe(String worldMap){
         width=64;
         height=64;
-        scale=32;
+        scale=16;
         tiles=new int[width*height];
 
         world=new Matrix4f().setTranslation(new Vector3f(0));
@@ -129,11 +129,12 @@ public class Labyrinthe {
         }
 
 
-        if(pos.y <  (win.getHeight()/2)+314 ){
-            pos.y= (win.getHeight())-(scale*3)-40 ;
+        if(pos.y <  (win.getHeight()/2)+scale*21 ){
+            pos.y= (win.getHeight())-(scale*9)+32 ;
         }
+
         if(pos.y > h- (win.getHeight()/2)-324-(scale*2)){
-            pos.y=h- (win.getHeight())+(scale*2) ;
+            pos.y=h- (win.getHeight())+(scale*2) +scale*3;
         }
 
 

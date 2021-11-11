@@ -94,7 +94,9 @@ public class Game {
 
         Labyrinthe world = new Labyrinthe("level1");
         Joueur joueur = new Joueur(100);
-       world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,0);
+        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
+        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
+        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
 
         HealthBar hb = new HealthBar(joueur.getVie());
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
