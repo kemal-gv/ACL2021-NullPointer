@@ -62,6 +62,8 @@ public class Joueur {
 
         tr = new Transform();
         tr.scale = new Vector3f(16,16,1);
+        tr.pos.x+=10;
+        tr.pos.y-=100;
         boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
 
     }
@@ -75,16 +77,16 @@ public class Joueur {
 
     public void deplacement(float delta, Window win, Camera camera, Labyrinthe world){
         if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
-            tr.pos.add(new Vector3f(-10*delta,0,0));
+            tr.pos.add(new Vector3f(-25*delta,0,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
-            tr.pos.add(new Vector3f(10*delta,0,0));
+            tr.pos.add(new Vector3f(25*delta,0,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_UP)){
-            tr.pos.add(new Vector3f(0,10*delta,0));
+            tr.pos.add(new Vector3f(0,25*delta,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
-            tr.pos.add(new Vector3f(0,-10*delta,0));
+            tr.pos.add(new Vector3f(0,-25*delta,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_D)){
             setVie(vie-1);
@@ -120,13 +122,15 @@ public class Joueur {
         if(box!=null) {
             Collision data = boundingBox.getCollision(box);
             if (data.isIntersecting) {
+                //System.out.println("Box x:"+box.getCenter().x+" //// box y = "+box.getCenter().y);
+                //System.out.println("Joueur x "+posX+" joueur y ="+posY);
                 boundingBox.correctPosition(box, data);
                 tr.pos.set(boundingBox.getCenter(),0);
             }
         }
         //System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
-            camera.setPosition(tr.pos.mul(-world.getScale()/2f/*-16*/,new Vector3f()));
+            camera.setPosition(tr.pos.mul(-world.getScale() /* /2f -> -16*/,new Vector3f()));
     }
 
     public void render(Shader shader, Camera camera){

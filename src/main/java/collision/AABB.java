@@ -8,6 +8,7 @@ public class AABB {
 
     public AABB(Vector2f center,Vector2f halfExtent){
         this.center=center;
+
         this.halfExtent=halfExtent;
     }
 
