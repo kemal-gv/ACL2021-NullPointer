@@ -57,4 +57,15 @@ public class Chest {
     public void setEmpty(boolean empty) {
         this.empty = empty;
     }
+
+    private boolean animation=false;
+
+    public void setAnimation(boolean b){
+        animation=b;
+    }
+
+    public boolean getAnimation() {
+        return animation;
+
+    }
 }

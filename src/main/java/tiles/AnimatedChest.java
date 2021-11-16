@@ -30,13 +30,14 @@ public class AnimatedChest extends AnimatedTile{
         this.elapsedTime += currentTime - lastTime;
 
         if (elapsedTime >= fps) {
-            if(open) {
+            if(open && c.getAnimation()) {
 
                 elapsedTime = 0;
                 texturePointer++;
 
                 if(texturePointer==frames.length-1){
                     c.setOpen(true);
+                    c.setAnimation(false);
                     isOpened=true;
                     System.out.println("IS OPEN");
                 }

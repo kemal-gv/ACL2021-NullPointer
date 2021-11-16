@@ -180,6 +180,7 @@ public class Labyrinthe {
 
          //Verification pour les portes
         takeLoot(posx,posy);
+
         verifChest();
 
 
@@ -217,6 +218,7 @@ public class Labyrinthe {
                 //if (ac.isOpened()) {
                   //  System.out.println("Le chest c:" + c.getItem() + "  est définitevement ouvert");
                     setTile(GestionnaireTile.tiles[18], c.getPosx(), c.getPosy());
+                    animationChest=false;
                 //}
             }
         }
@@ -264,6 +266,8 @@ public class Labyrinthe {
 
     }
 
+    private boolean animationChest=false;//Si false il y a aucune anim de chest mais si true on peut pas en faire dautres
+
     public void openChest(int posx,int posy){
 
         Tile[] porteProximite=new Tile[]{getElementPlateau(posx+1,posy) , getElementPlateau(posx-1,posy)
@@ -275,7 +279,8 @@ public class Labyrinthe {
         };
         for(int i=0;i<porteProximite.length;i++){
             if(porteProximite[i].getId()==15) {
-                if(window.getInput().isKeyDown(GLFW_KEY_F)) {
+                if(window.getInput().isKeyDown(GLFW_KEY_F) && !animationChest) {
+                    animationChest=true;
                     System.out.println("OEPNNE");
                     //AnimatedChest ac= (AnimatedChest) porteProximite[i];
                     //ac.setOpen();
@@ -293,6 +298,7 @@ public class Labyrinthe {
 
                    // System.out.println("Pos x du coffre : "+pos[i][0]+" , "+pos[i][1]+ " et le coffre est ici : "+c.getPosx()+" , "+c.getPosy());
                     ac2.setC(c);
+                    c.setAnimation(true);
                     setTile(ac2, pos[i][0],pos[i][1]);
                     //c.setOpen(true);
 
