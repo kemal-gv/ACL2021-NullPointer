@@ -3,6 +3,7 @@ package tiles;
 import models.Model;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import render.Animation;
 import render.Camera;
 import render.Shader;
 import render.Texture;
@@ -69,7 +70,16 @@ public class TileRenderer {
     public void renderTile(int id, int x, int y, Shader sh, Matrix4f world, Camera cam){
         sh.bind();
         if(tileTexture.containsKey(gestionnaireTile.getTile(id).getTexture())){
-            tileTexture.get(gestionnaireTile.getTile(id).getTexture()).bind(0);
+            Tile t=gestionnaireTile.getTile(id);
+            if(t.isAnimated()){
+                AnimatedTile a=(AnimatedTile)t;
+                a.bind();
+
+
+            }
+            else {
+                tileTexture.get(gestionnaireTile.getTile(id).getTexture()).bind(0);
+            }
         }
 
         Matrix4f tilePosition=new Matrix4f().translate(new Vector3f(x*2,y*2,0) );

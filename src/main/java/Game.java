@@ -92,13 +92,14 @@ public class Game {
         //On doit creer les textures ici après le context
         TileRenderer tileRenderer=new TileRenderer();
 
-        Labyrinthe world = new Labyrinthe("level1");
         Joueur joueur = new Joueur(100);
-        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
-        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
-        world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
+        Labyrinthe world = new Labyrinthe("level1",joueur,win);
 
-        HealthBar hb = new HealthBar(joueur.getVie());
+     //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
+       // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
+        //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
+
+        HealthBar hb = new HealthBar((int)joueur.getVie());
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
 
@@ -211,7 +212,7 @@ public class Game {
 
                 //vie du joueur infèrieur à 0
                 if (joueur.getVie()>=0)
-                    hb.update(joueur.getVie());
+                    hb.update((int)joueur.getVie());
                 world.correctCamera(camera,win);
 
 
