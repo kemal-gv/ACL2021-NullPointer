@@ -3,7 +3,7 @@ package render;
 import framerate.Timer;
 
 public class Animation {
-    private Texture[] frames;
+    private final Texture[] frames;
     private int texturePointer;
 
     private double elapsedTime;

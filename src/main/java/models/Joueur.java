@@ -8,13 +8,14 @@ import render.Animation;
 import render.Camera;
 import render.Shader;
 import render.Texture;
+import tiles.Tile;
 import windows.Window;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 
 public class Joueur {
-    private int vie;
+    private double vie;
     private int attaque;
     private float posX;
     private float posY;
@@ -62,8 +63,8 @@ public class Joueur {
 
         tr = new Transform();
         tr.scale = new Vector3f(16,16,1);
-        tr.pos.x+=10;
-        tr.pos.y-=100;
+        tr.pos.x=2;
+        tr.pos.y=-2;
         boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
 
     }
@@ -76,21 +77,38 @@ public class Joueur {
 
 
     public void deplacement(float delta, Window win, Camera camera, Labyrinthe world){
+        int x=(int) Math.ceil((posX )/2/100);
+        int y=(int) Math.ceil(Math.abs(posY )/2/100);
+
+
+        /*
+        System.out.println("Pos x : "+x+" pos Y = "+y);
+
+        if(posY+1 <= 0 && posX-1>=0) {
+            Tile t = world.getElementPlateau((int) Math.ceil((posX )/2/100), (int) Math.ceil(Math.abs(posY )/2/100));
+
+            if(t!=null)
+                if(t.getId()!=0)
+                    System.out.println("Je marche sur : " + t.getId());
+        }
+
+         */
         if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
-            tr.pos.add(new Vector3f(-25*delta,0,0));
+            tr.pos.add(new Vector3f(-10*delta,0,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
-            tr.pos.add(new Vector3f(25*delta,0,0));
+            tr.pos.add(new Vector3f(10*delta,0,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_UP)){
-            tr.pos.add(new Vector3f(0,25*delta,0));
+            tr.pos.add(new Vector3f(0,10*delta,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
-            tr.pos.add(new Vector3f(0,-25*delta,0));
+            tr.pos.add(new Vector3f(0,-10*delta,0));
         }
         if(win.getInput().isKeyDown(GLFW_KEY_D)){
             setVie(vie-1);
         }
+
         posX = tr.pos.x;
         posY = tr.pos.y;
         boundingBox.getCenter().set(tr.pos.x,tr.pos.y);
@@ -99,6 +117,7 @@ public class Joueur {
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 boxes[i+j*5]=world.verifierCollision((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
+
             }
         }
 
@@ -113,8 +132,6 @@ public class Joueur {
 
                 if(length1.lengthSquared() > length2.lengthSquared()){
                     box = boxes[i];
-                }else{
-
                 }
             }
         }
@@ -122,15 +139,24 @@ public class Joueur {
         if(box!=null) {
             Collision data = boundingBox.getCollision(box);
             if (data.isIntersecting) {
+               // System.out.println("collision");
+                //System.out.println((int)(box.getCenter().x/2)+" ====" +(int)(box.getCenter().y/2));
+                //System.out.println("Collision avec : "+world.getElementPlateau((int)(box.getCenter().x/2),(int)Math.abs(box.getCenter().y/2)).getId());
                 //System.out.println("Box x:"+box.getCenter().x+" //// box y = "+box.getCenter().y);
                 //System.out.println("Joueur x "+posX+" joueur y ="+posY);
+
                 boundingBox.correctPosition(box, data);
                 tr.pos.set(boundingBox.getCenter(),0);
             }
+
         }
         //System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
             camera.setPosition(tr.pos.mul(-world.getScale() /* /2f -> -16*/,new Vector3f()));
+    }
+
+    private void openDoor() {
+
     }
 
     public void render(Shader shader, Camera camera){
@@ -140,13 +166,14 @@ public class Joueur {
         texture.bind(0);
         model.render();
 
+
     }
 
-    public int getVie(){
+    public double getVie(){
         return this.vie;
     }
 
-    public void setVie(int vie){
+    public void setVie(double vie){
         this.vie = vie;
     }
 
@@ -157,5 +184,12 @@ public class Joueur {
 
     public float getPosY() {
         return posY;
+    }
+
+    public float getTrX() {
+        return  tr.pos.x;
+    }
+    public float getTrY() {
+        return  tr.pos.y;
     }
 }
