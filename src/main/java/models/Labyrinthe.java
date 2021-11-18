@@ -42,7 +42,7 @@ public class Labyrinthe {
         this.window=w;
         this.joueur=j;
         height=64;
-        scale=16;
+        scale=32;
         tiles=new Tile[width*height];
         for(int i=0;i<tiles.length;i++){
             tiles[i]=GestionnaireTile.tiles[0];
@@ -354,6 +354,10 @@ public class Labyrinthe {
         int w = -width * scale * 2;
         int h = height * scale * 2;
 
+
+
+
+
         if(pos.x > -(win.getWidth()/2)+scale){
             pos.x =  -(win.getWidth()/2)+scale;
         }
@@ -362,13 +366,15 @@ public class Labyrinthe {
         }
 
 
-        if(pos.y <  (win.getHeight()/2)+scale*21 ){
-            pos.y= (win.getHeight())-(scale*9)+32 ;
+        if(pos.y <  (win.getHeight()/2)+scale*5+152 ){
+            pos.y= (win.getHeight()/2)+scale*5+152;
         }
 
         if(pos.y > h- (win.getHeight()/2)-324-(scale*2)){
-            pos.y=h- (win.getHeight())+(scale*2) +scale*3;
+            pos.y=h- (win.getHeight()/2)-324-(scale*2);
         }
+
+
 
 
     }

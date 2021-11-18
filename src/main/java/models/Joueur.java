@@ -62,7 +62,7 @@ public class Joueur {
         AABB box=null;
 
         tr = new Transform();
-        tr.scale = new Vector3f(16,16,1);
+        tr.scale = new Vector3f(32,32,1);
         tr.pos.x=2;
         tr.pos.y=-2;
         boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
@@ -117,6 +117,7 @@ public class Joueur {
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 boxes[i+j*5]=world.verifierCollision((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
+               //  boxes[i+j*5]=world.verifierCollision((int)posX/3,(int)posY/3);
 
             }
         }
