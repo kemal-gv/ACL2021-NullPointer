@@ -141,6 +141,7 @@ public class Labyrinthe {
     public void render(TileRenderer tileRenderer, Shader shader, Camera cam){
 
 
+
         //Verifier collision
         double x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1.25);
         double y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.25);

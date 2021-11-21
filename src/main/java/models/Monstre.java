@@ -20,6 +20,7 @@ public class Monstre {
 	private float posX;
 	private float posY;
 
+
 	private Model model;
 	private Animation texture;
 	private models.Transform tr;

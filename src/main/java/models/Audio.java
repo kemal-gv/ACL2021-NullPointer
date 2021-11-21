@@ -7,6 +7,7 @@ import javax.sound.sampled.FloatControl;
 import java.io.File;
 
 public class Audio{
+
     private String name = "ruins";
     private Clip clip = null;
 

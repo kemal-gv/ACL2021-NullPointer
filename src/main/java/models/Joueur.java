@@ -83,6 +83,7 @@ public class Joueur {
         int y=(int) Math.ceil(Math.abs(posY )/2/100);
 
 
+
         /*
         System.out.println("Pos x : "+x+" pos Y = "+y);
 

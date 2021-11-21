@@ -113,6 +113,7 @@ public class Game {
        // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
 
+
         HealthBar hb = new HealthBar((int)joueur.getVie());
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
