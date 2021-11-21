@@ -25,7 +25,7 @@ public class Joueur {
 
     private AABB boundingBox;
 
-    public Joueur(int vie){
+    public Joueur(int vie, int posX, int posY){
         this.vie = vie;
 
         float[] vertices=new float[]{
@@ -62,10 +62,12 @@ public class Joueur {
         AABB box=null;
 
         tr = new Transform();
-        tr.scale = new Vector3f(16,16,1);
-        tr.pos.x=2;
-        tr.pos.y=-2;
-        boundingBox=new AABB(new Vector2f(tr.pos.x,tr.pos.y),new Vector2f(1,1));
+        tr.scale = new Vector3f(32,32,1);
+        tr.pos.x=posX;
+        tr.pos.y=posY;
+        this.posX = posX;
+        this.posY = posY;
+        boundingBox=new AABB(new Vector2f(posX,posY),new Vector2f(1,1));
 
     }
     public void setPos(int x, int y) {
@@ -111,12 +113,13 @@ public class Joueur {
 
         posX = tr.pos.x;
         posY = tr.pos.y;
-        boundingBox.getCenter().set(tr.pos.x,tr.pos.y);
+        boundingBox.getCenter().set(posX,posY);
 
         AABB[] boxes=new AABB[25];
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                boxes[i+j*5]=world.verifierCollision((int)(((tr.pos.x/2)+0.5f)-(5/2))+i,(int)(((-tr.pos.y/2)+0.5f)-(5/2))+j);
+                boxes[i+j*5]=world.verifierCollision((int)(((posX/2)+0.5f)-(5/2))+i,(int)(((-posY/2)+0.5f)-(5/2))+j);
+               //  boxes[i+j*5]=world.verifierCollision((int)posX/3,(int)posY/3);
 
             }
         }
@@ -127,8 +130,8 @@ public class Joueur {
                 if(box==null){
                     box=boxes[i];
                 }
-                Vector2f length1 = box.getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
-                Vector2f length2 = boxes[i].getCenter().sub(tr.pos.x,tr.pos.y,new Vector2f());
+                Vector2f length1 = box.getCenter().sub(posX,posY,new Vector2f());
+                Vector2f length2 = boxes[i].getCenter().sub(posX,posY,new Vector2f());
 
                 if(length1.lengthSquared() > length2.lengthSquared()){
                     box = boxes[i];
@@ -186,10 +189,4 @@ public class Joueur {
         return posY;
     }
 
-    public float getTrX() {
-        return  tr.pos.x;
-    }
-    public float getTrY() {
-        return  tr.pos.y;
-    }
 }

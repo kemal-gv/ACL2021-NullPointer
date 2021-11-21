@@ -42,7 +42,7 @@ public class Labyrinthe {
         this.window=w;
         this.joueur=j;
         height=64;
-        scale=16;
+        scale=32;
         tiles=new Tile[width*height];
         for(int i=0;i<tiles.length;i++){
             tiles[i]=GestionnaireTile.tiles[0];
@@ -142,8 +142,8 @@ public class Labyrinthe {
 
 
         //Verifier collision
-        double x=Math.ceil(((((joueur.getTrX()/2)+0.5f)-(5/2)))+1.25);
-        double y =Math.ceil(((((-joueur.getTrY()/2)+0.5f)-(5/2)))+1.25);
+        double x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1.25);
+        double y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.25);
 
         //System.out.println("Le x : "+x+" le y : "+y);
         Tile t=getElementPlateau((int)x,(int)y);
@@ -158,8 +158,8 @@ public class Labyrinthe {
         }
 
 
-        x=Math.ceil(((((joueur.getTrX()/2)+0.5f)-(5/2)))+1);
-        y =Math.ceil(((((-joueur.getTrY()/2)+0.5f)-(5/2)))+1.15);
+        x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1);
+        y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.15);
         t=getElementPlateau((int)x,(int)y);
          if(t.getId()==12){
             //Verif pièce
@@ -354,6 +354,10 @@ public class Labyrinthe {
         int w = -width * scale * 2;
         int h = height * scale * 2;
 
+
+
+
+
         if(pos.x > -(win.getWidth()/2)+scale){
             pos.x =  -(win.getWidth()/2)+scale;
         }
@@ -362,13 +366,15 @@ public class Labyrinthe {
         }
 
 
-        if(pos.y <  (win.getHeight()/2)+scale*21 ){
-            pos.y= (win.getHeight())-(scale*9)+32 ;
+        if(pos.y <  (win.getHeight()/2)+scale*5+152 ){
+            pos.y= (win.getHeight()/2)+scale*5+152;
         }
 
         if(pos.y > h- (win.getHeight()/2)-324-(scale*2)){
-            pos.y=h- (win.getHeight())+(scale*2) +scale*3;
+            pos.y=h- (win.getHeight()/2)-324-(scale*2);
         }
+
+
 
 
     }
