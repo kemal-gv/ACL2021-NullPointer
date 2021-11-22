@@ -161,14 +161,28 @@ public class Labyrinthe {
         x=Math.ceil(((((joueur.getTrX()/2)+0.5f)-(5/2)))+1);
         y =Math.ceil(((((-joueur.getTrY()/2)+0.5f)-(5/2)))+1.15);
         t=getElementPlateau((int)x,(int)y);
-         if(t.getId()==12){
-            //Verif pièce
+         if(t.getId()==19) {
+             //Verif potion
 
 
-            //Piece ici
-            System.out.println("Pièce rammasé, un peu de vie pour toi <3");
-            setTile(GestionnaireTile.tiles[0],(int)(x),(int)(y) );
-            joueur.setVie(joueur.getVie()+30);
+             //potion ici
+             System.out.println("Potion rammasée, un peu de vie pour toi <3");
+             setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+             if (joueur.getVie() + 30 >= 100) {
+                 joueur.setVie(100);
+             } else {
+                 joueur.setVie(joueur.getVie() + 30);
+             }
+         }
+
+        if(t.getId()==12) {
+            //Verif pièces
+
+
+            //pièce ici
+            System.out.println("Pièce rammasée, un peu de point pour toi <3");
+            setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+
         }
 
 
@@ -195,8 +209,8 @@ public class Labyrinthe {
 
 
         ////
-        if(t.getId()!=0)
-            System.out.println("T = "+t.getId());
+ //       if(t.getId()!=0)
+//            System.out.println("T = "+t.getId());
 
 
         for(int i = 0; i<height;i++){
