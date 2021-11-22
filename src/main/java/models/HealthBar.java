@@ -17,7 +17,7 @@ public class HealthBar {
 
 
     public HealthBar(int vie){
-        this.vie_total = vie;
+        this.vie_total = 100;
 
         float[] vertices=new float[]{
                 -2f,-3f,0,//TOP LEFT     0

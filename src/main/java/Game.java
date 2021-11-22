@@ -1,14 +1,10 @@
 import collision.AABB;
+import models.*;
 import tiles.TileRenderer;
-import models.Labyrinthe;
-import models.Joueur;
-import models.HealthBar;
-import models.Transform;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import render.Camera;
 import framerate.Timer;
-import models.Model;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
@@ -22,6 +18,10 @@ import windows.Window;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class Game {
     private static long window;
@@ -86,18 +86,33 @@ public class Game {
         Camera camera= new Camera(win.getWidth(),win.getWidth());
 
 
-        //
-
         glEnable(GL_TEXTURE_2D);
         //On doit creer les textures ici après le context
         TileRenderer tileRenderer=new TileRenderer();
 
-        Joueur joueur = new Joueur(100);
+        Joueur joueur = new Joueur(100, 1, -1);
+
+        ArrayList<Monstre> monstres = new ArrayList<>();
+        Random random = new Random();
+        ArrayList<HealthBar> hbMonstres = new ArrayList<>();
+        for (int i = 0; i<5; i++){
+            int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
+            int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
+            int vie = random.nextInt(100 + 1) + 1;
+            System.out.println("vie monstre" +vie);
+            Monstre monstre = new Monstre(vie, randX,randY);
+            HealthBar hbMonstre = new HealthBar(vie);
+
+            monstres.add(monstre);
+            hbMonstres.add(hbMonstre);
+        }
+
         Labyrinthe world = new Labyrinthe("level1",joueur,win);
 
      //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
        // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
+
 
         HealthBar hb = new HealthBar((int)joueur.getVie());
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
@@ -150,14 +165,19 @@ public class Game {
 
 
 
+        Audio audio = new Audio();
+        try {
+            audio.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-
-
-
-
+        int i = 1;
 
         // while(!glfwWindowShouldClose(window)){
         while(!win.shouldClose()){
+
+
             boolean canRender=false;
             double time2=Timer.getTime();
             double passed = time2 - time;
@@ -207,6 +227,27 @@ public class Game {
                 //glfwPollEvents();
 
                 //joueur.update((float) frameCap, win, camera, world);
+                if (i%17==0) {
+                    /*
+                    for (Map.Entry entry : monstres.entrySet()){
+                        Monstre m = (Monstre) entry.getValue();
+                        m.deplacementAleatoire((float) frameCap, win, camera, world);
+                    }
+
+                     */
+                    for (Monstre m : monstres){
+                        m.deplacementAleatoire((float) frameCap, win, camera, world);
+                    }
+                }
+                i++;
+
+                int indMonstre = 0;
+                for(Monstre m : monstres) {
+                    if (m.getVie()>=0)
+                        hbMonstres.get(indMonstre).update((int)m.getVie());
+                    indMonstre++;
+                }
+
                 joueur.deplacement((float)frameCap,win,camera,world);
                 joueur.setVie(joueur.getVie());
 
@@ -247,7 +288,15 @@ public class Game {
                 //Rendering tile
 
                 world.render(tileRenderer,shader,camera);
+                int indMonstres = 0;
+                for(Monstre m : monstres){
+                    m.render(shader, camera);
+                    hbMonstres.get(indMonstres).render(shader);
+                    indMonstres++;
+                }
+
                 joueur.render(shader, camera);
+
                 hb.render(shader);
 
                 win.swapBuffers();

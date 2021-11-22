@@ -141,9 +141,10 @@ public class Labyrinthe {
     public void render(TileRenderer tileRenderer, Shader shader, Camera cam){
 
 
+
         //Verifier collision
-        double x=Math.ceil(((((joueur.getTrX()/2)+0.5f)-(5/2)))+1.25);
-        double y =Math.ceil(((((-joueur.getTrY()/2)+0.5f)-(5/2)))+1.25);
+        double x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1.25);
+        double y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.25);
 
         //System.out.println("Le x : "+x+" le y : "+y);
         Tile t=getElementPlateau((int)x,(int)y);
@@ -158,8 +159,8 @@ public class Labyrinthe {
         }
 
 
-        x=Math.ceil(((((joueur.getTrX()/2)+0.5f)-(5/2)))+1);
-        y =Math.ceil(((((-joueur.getTrY()/2)+0.5f)-(5/2)))+1.15);
+        x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1);
+        y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.15);
         t=getElementPlateau((int)x,(int)y);
          if(t.getId()==19) {
              //Verif potion
