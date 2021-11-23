@@ -90,7 +90,8 @@ public class Game {
         //On doit creer les textures ici après le context
         TileRenderer tileRenderer=new TileRenderer();
 
-        Joueur joueur = new Joueur(100, 1, -1);
+        Joueur joueur = new Joueur(100, 10, -3);
+        //JoueurTest jTest=new JoueurTest(100, 10, -1, new Transform());
 
         ArrayList<Monstre> monstres = new ArrayList<>();
         Random random = new Random();
@@ -109,6 +110,7 @@ public class Game {
 
         Labyrinthe world = new Labyrinthe("level1",joueur,win);
 
+        world.setMonstre(monstres);
      //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
        // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
@@ -236,20 +238,27 @@ public class Game {
 
                      */
                     for (Monstre m : monstres){
-                        m.deplacementAleatoire((float) frameCap, win, camera, world);
+                        if(m.getVie()>0)
+                            m.deplacementAleatoire((float) frameCap, win, camera, world);
                     }
                 }
                 i++;
 
                 int indMonstre = 0;
                 for(Monstre m : monstres) {
-                    if (m.getVie()>=0)
+                    if (m.getVie()>0)
                         hbMonstres.get(indMonstre).update((int)m.getVie());
                     indMonstre++;
                 }
 
+               //
                 joueur.deplacement((float)frameCap,win,camera,world);
+
+                //jTest.deplacement((float)frameCap,win,camera,world);
+
                 joueur.setVie(joueur.getVie());
+
+
 
                 //vie du joueur infèrieur à 0
                 if (joueur.getVie()>=0)
@@ -290,12 +299,16 @@ public class Game {
                 world.render(tileRenderer,shader,camera);
                 int indMonstres = 0;
                 for(Monstre m : monstres){
-                    m.render(shader, camera);
-                    hbMonstres.get(indMonstres).render(shader);
-                    indMonstres++;
+                    if(m.getVie()>0) {
+                        m.render(shader, camera);
+                        hbMonstres.get(indMonstres).render(shader);
+                        indMonstres++;
+                    }
                 }
 
                 joueur.render(shader, camera);
+               // jTest.render(shader,camera,world);
+                //jTest.setPos(10,-3);
 
                 hb.render(shader);
 

@@ -154,7 +154,7 @@ public class Monstre {
 
 
 
-		camera.setPosition(tr.pos.mul(-world.getScale() /* /2f -> -16*/,new Vector3f()));
+		//camera.setPosition(tr.pos.mul(-world.getScale() /* /2f -> -16*/,new Vector3f()));
 
 	}
 

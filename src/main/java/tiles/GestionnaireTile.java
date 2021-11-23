@@ -25,20 +25,16 @@ public class GestionnaireTile {
 
         //Animated tiles
         tiles[cptTiles]=new AnimatedTile(cptTiles,"fontaine/bas/0","fontaine/bas/",3,15,false).setSolid();
-        System.out.println(cptTiles+" <<<<<<<<<<<");
         cptTiles++;
 
 
         tiles[cptTiles]=new AnimatedTile(cptTiles,"fontaine/haut/0","fontaine/haut/",3,15,false).setSolid();
-        System.out.println(cptTiles+" <<<<<<<<<<<");
         cptTiles++;
 
         tiles[cptTiles]=new AnimatedTile(cptTiles,"spikes/0","spikes",4,5,true);
-        System.out.println(cptTiles+" <<<<<<<<<<<");
         cptTiles++;
 
         tiles[cptTiles]=new AnimatedTile(cptTiles,"pieces/0","pieces",4,5,false);
-        System.out.println(cptTiles+" <<<<<<<<<<<");
         cptTiles++;
 
         ajoutTiles("assets/doors/door1",cptTiles,true);
@@ -48,7 +44,6 @@ public class GestionnaireTile {
        ajoutTiles("assets/chests/full/0",cptTiles,true);
 
         tiles[cptTiles]=new AnimatedChest(cptTiles,"assets/chests/full/0","assets/chests/full",3,1,false).setSolid();
-        System.out.println(cptTiles+" <<<<<<<<<<<");
         cptTiles++;
 
         ajoutTiles("assets/chests/empty/2",cptTiles,true);

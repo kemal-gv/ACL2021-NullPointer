@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
@@ -24,6 +25,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
 public class Labyrinthe {
 
 
+    private List<Monstre> listMonstres;
 
     private Tile[] tiles;
     private int width;
@@ -138,6 +140,10 @@ public class Labyrinthe {
 
     }
 
+    public Matrix4f getWorldMatrix(){
+        return world;
+    }
+
     public void render(TileRenderer tileRenderer, Shader shader, Camera cam){
 
 
@@ -189,6 +195,8 @@ public class Labyrinthe {
 
 
 
+
+
          //Verification si il y a une porte aux alentours
         int posx=(int)x;
          int posy=(int)y;
@@ -204,6 +212,7 @@ public class Labyrinthe {
 
         openChest(posx,posy);
 
+        verifCollisionMonstre(posx,posy);
         //Verification pour les coffres
 
 
@@ -223,6 +232,22 @@ public class Labyrinthe {
             }
         }
 
+    }
+
+    private void verifCollisionMonstre(int x,int y) {
+        for(Monstre m:listMonstres){
+            int posx= (int) Math.ceil(((((m.getPosX()/2)+0.5f)-(5/2)))+1);
+            int posy = (int) Math.ceil(((((-m.getPosY()/2)+0.5f)-(5/2)))+1.15);
+
+            if(posx==x && posy==y){
+                joueur.setVie(joueur.getVie()-0.5);
+                if(window.getInput().isKeyDown(GLFW_KEY_F)) {
+                    m.setVie(m.getVie()-5);
+                }
+
+                    System.out.println("COLLISION !");
+            }
+        }
     }
 
     public void verifChest(){
@@ -424,5 +449,13 @@ public class Labyrinthe {
         }catch (ArrayIndexOutOfBoundsException e){
             return null;
         }
+    }
+
+    public void ajoutMonstre(Monstre m){
+        listMonstres.add(m);
+    }
+
+    public void setMonstre(List<Monstre> lm){
+        listMonstres=lm;
     }
 }
