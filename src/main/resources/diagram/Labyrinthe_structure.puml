@@ -1,0 +1,418 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": ""
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false // root node is included
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "models.Labyrinthe"
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1068799382 { 
+   	label=models
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Chest1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Chest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ac: AnimatedChest [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   animation: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   empty: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isOpen: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   item: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   posx: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   posy: int [1]</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Labyrinthe1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Labyrinthe</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   animationChest: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   boundingBoxes: AABB[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   chests: ArrayList&lt;Chest&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   height: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   listMonstres: List&lt;Monstre&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   scale: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tiles: Tile[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tilesByte: byte[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   width: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   window: Window [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   world: Matrix4f [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ ajoutMonstre(m: Monstre)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ correctCamera(camera: Camera, win: Window)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getChest(x: int, y: int): Chest</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getElementPlateau(x: int, y: int): Tile</TD></TR>
+<TR><TD ALIGN="LEFT" >+ openChest(posx: int, posy: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ openDoor(posx: int, posy: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render(tileRenderer: TileRenderer, shader: Shader, cam: Camera)</TD></TR>
+<TR><TD ALIGN="LEFT" >- takeLoot(posx: int, posy: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ verifChest()</TD></TR>
+<TR><TD ALIGN="LEFT" >- verifCollisionMonstre(x: int, y: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ verifierCollision(x: int, y: int): AABB</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Model1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Model</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   drawCount: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   indiceID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   textureID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   verticeID: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- createBuffer(data: float[]): FloatBuffer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Monstre1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Monstre</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attaque: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   boundingBox: AABB [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   model: Model [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   posX: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   posY: float [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   texture: Animation [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tr: Transform [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   vie: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ deplacementAleatoire(delta: float, win: Window, camera: Camera, world: Labyrinthe)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reduireVie(vie: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render(shader: Shader, camera: Camera)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Transform1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Transform</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   pos: Vector3f [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   scale: Vector3f [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getProjection(cible: Matrix4f): Matrix4f</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_110363525 { 
+   	label=tiles
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   AnimatedChest110363525[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AnimatedChest</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   c: Chest [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   isOpened: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   item: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ bind(sampler: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+AnimatedTile110363525[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AnimatedTile</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   amount: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   cooldown: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   cpt: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   currentTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   elapsedTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   fileName: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   fps: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   frames: Texture[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   lastTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   open: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   texturePointer: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ bind()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ bind(sampler: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Tile110363525[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Tile</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   animated: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   solid: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   texture: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ setSolid(): Tile</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1183866391 { 
+   	label=inputs
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Input1183866391[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Input</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   keys: boolean[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   validKeyList: List&lt;Integer&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   validKeys: int[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   window: long [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ isKeyDown(key: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isKeyPressed(key: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isKeyReleased(key: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isMouseButtonDown(button: int): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1349493379 { 
+   	label=windows
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Window1349493379[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Window</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   fullscreen: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   height: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   input: Input [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   width: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ createWindow(title: String)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shouldClose(): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ swapBuffers()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1887651634 { 
+   	label=collision
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   AABB1887651634[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AABB</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   center: Vector2f [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   halfExtent: Vector2f [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ correctPosition(box2: AABB, data: Collision)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCollision(box2: AABB): Collision</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCollisionInter(box2: AABB): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_934592106 { 
+   	label=render
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Animation934592106[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Animation</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   currentTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   elapsedTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   fps: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   frames: Texture[] [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   lastTime: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   texturePointer: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ bind()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ bind(sampler: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Texture934592106[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Texture</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   height: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   width: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ bind(sampler: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+'edges    
+AnimatedChest110363525 -> Chest1068799382[label="c
+[0..1]"];
+AnimatedTile110363525 -> AnimatedChest110363525[arrowhead=none, arrowtail=empty, dir=both];
+AnimatedTile110363525 -> Texture934592106[label="frames
+[0..*]"];
+Animation934592106 -> Texture934592106[label="frames
+[0..*]"];
+Chest1068799382 -> AnimatedChest110363525[label="ac
+[0..1]"];
+Labyrinthe1068799382 -> AABB1887651634[label="boundingBoxes
+[0..*]"];
+Labyrinthe1068799382 -> Chest1068799382[label="chests
+[0..*]"];
+Labyrinthe1068799382 -> Monstre1068799382[label="listMonstres
+[0..*]"];
+Labyrinthe1068799382 -> Tile110363525[label="tiles
+[0..*]"];
+Labyrinthe1068799382 -> Window1349493379[label="window
+[0..1]"];
+Monstre1068799382 -> AABB1887651634[label="boundingBox
+[0..1]"];
+Monstre1068799382 -> Animation934592106[label="texture
+[0..1]"];
+Monstre1068799382 -> Model1068799382[label="model
+[0..1]"];
+Monstre1068799382 -> Transform1068799382[label="tr
+[0..1]"];
+Tile110363525 -> AnimatedTile110363525[arrowhead=none, arrowtail=empty, dir=both];
+Window1349493379 -> Input1183866391[label="input
+[0..1]"];
+    
+}
+@enduml

@@ -1,0 +1,179 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": ""
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false // root node is included
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "models.HealthBar"
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1068799382 { 
+   	label=models
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   HealthBar1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HealthBar</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   model_green: Model [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   model_red: Model [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   texture_green: Texture [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   texture_red: Texture [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   tr: Transform [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   vie_total: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ render(shader: Shader)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(vie: float)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Model1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Model</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   drawCount: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   indiceID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   textureID: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   verticeID: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- createBuffer(data: float[]): FloatBuffer</TD></TR>
+<TR><TD ALIGN="LEFT" >+ render()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Transform1068799382[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Transform</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   pos: Vector3f [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   scale: Vector3f [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getProjection(cible: Matrix4f): Matrix4f</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_934592106 { 
+   	label=render
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Texture934592106[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Texture</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   height: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   id: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   width: int [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ bind(sampler: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+'edges    
+HealthBar1068799382 -> Model1068799382[label="model_green
+[0..1]"];
+HealthBar1068799382 -> Model1068799382[label="model_red
+[0..1]"];
+HealthBar1068799382 -> Texture934592106[label="texture_green
+[0..1]"];
+HealthBar1068799382 -> Texture934592106[label="texture_red
+[0..1]"];
+HealthBar1068799382 -> Transform1068799382[label="tr
+[0..1]"];
+    
+}
+@enduml
