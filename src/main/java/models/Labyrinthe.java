@@ -36,6 +36,7 @@ public class Labyrinthe {
     private int scale;
 
     private ArrayList<Chest> chests=new ArrayList<>();
+    private ArrayList<HoleTp> holes=new ArrayList<>();
 
     private static Joueur joueur;
     private Window window;
@@ -103,6 +104,10 @@ public class Labyrinthe {
                             //t=newAc;
                             //System.out.println("X = "+x+" Y = "+y);
                         }
+                        else if(t.getId()==21){
+                            //Ici on a un trou donc on doit tp le joueur qd il est dessus
+                            holes.add(new HoleTp(blue,green,x,-y));
+                        }
 
 
                         setTile(t,x,y);
@@ -156,72 +161,68 @@ public class Labyrinthe {
         Tile t=getElementPlateau((int)x,(int)y);
        // System.out.println("Pos x = "+(Math.ceil(joueur.getPosX() -1)+" y="+Math.ceil(Math.abs(joueur.getPosY()+1))));
         //System.out.println("Pos xXX = "+((int)(joueur.getPosX() -1)+" y="+((joueur.getPosY()+1))));
-        if(t.getId()==11){
-            //Ici il y a des spikes on vérifie si ils sont "ouverts"
-            AnimatedTile spike= (AnimatedTile) t;
-            if(spike.isOpen()){
-                joueur.setVie(joueur.getVie()-2);
+        if(t!=null) {
+            if (t.getId() == 11) {
+                //Ici il y a des spikes on vérifie si ils sont "ouverts"
+                AnimatedTile spike = (AnimatedTile) t;
+                if (spike.isOpen()) {
+                    joueur.setVie(joueur.getVie() - 0.2);
+                }
             }
-        }
 
 
-        x=Math.ceil(((((joueur.getPosX()/2)+0.5f)-(5/2)))+1);
-        y =Math.ceil(((((-joueur.getPosY()/2)+0.5f)-(5/2)))+1.15);
-        t=getElementPlateau((int)x,(int)y);
-         if(t.getId()==19) {
-             //Verif potion
+            x = Math.ceil(((((joueur.getPosX() / 2) + 0.5f) - (5 / 2))) + 1);
+            y = Math.ceil(((((-joueur.getPosY() / 2) + 0.5f) - (5 / 2))) + 1.15);
+            t = getElementPlateau((int) x, (int) y);
+            if (t.getId() == 19) {
+                //Verif potion
 
 
-             //potion ici
-             System.out.println("Potion rammasée, un peu de vie pour toi <3");
-             setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
-             if (joueur.getVie() + 30 >= 100) {
-                 joueur.setVie(100);
-             } else {
-                 joueur.setVie(joueur.getVie() + 30);
-             }
-         }
+                //potion ici
+                System.out.println("Potion rammasée, un peu de vie pour toi <3");
+                setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+                if (joueur.getVie() + 30 >= 100) {
+                    joueur.setVie(100);
+                } else {
+                    joueur.setVie(joueur.getVie() + 30);
+                }
+            }
 
-        if(t.getId()==12) {
-            //Verif pièces
-
-
-            //pièce ici
-            System.out.println("Pièce rammasée, un peu de point pour toi <3");
-            setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
-
-        }
+            if (t.getId() == 12) {
+                //Verif pièces
 
 
+                //pièce ici
+                System.out.println("Pièce rammasée, un peu de point pour toi <3");
+                setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+
+            }
 
 
+            //Verification si il y a une porte aux alentours
+            int posx = (int) x;
+            int posy = (int) y;
+
+            //Verification pour les portes
+            takeLoot(posx, posy);
+
+            verifChest();
 
 
-         //Verification si il y a une porte aux alentours
-        int posx=(int)x;
-         int posy=(int)y;
+            openDoor(posx, posy);
 
-         //Verification pour les portes
-        takeLoot(posx,posy);
+            openChest(posx, posy);
 
-        verifChest();
-
+            verifCollisionMonstre(posx, posy);
+            verifHoles(posx, posy);
+            //Verification pour les coffres
 
 
-        openDoor(posx,posy);
-
-        openChest(posx,posy);
-
-        verifCollisionMonstre(posx,posy);
-        //Verification pour les coffres
-
-
-
-
-        ////
- //       if(t.getId()!=0)
+            ////
+            //       if(t.getId()!=0)
 //            System.out.println("T = "+t.getId());
 
+        }
 
         for(int i = 0; i<height;i++){
             for(int j=0 ; j<width;j++){
@@ -265,6 +266,16 @@ public class Labyrinthe {
     }
 
 
+    public void verifHoles(int x,int y){
+        System.out.println(x+" , "+y);
+
+        for(HoleTp hole:holes){
+            if(hole.getPosX()==x && hole.getPosY()==-y) {
+                //On tp si il est usr un trou
+                joueur.setPos(hole.getPosX(), -hole.getTpY());
+            }
+        }
+    }
 
     private void takeLoot(int posx, int posy) {
 

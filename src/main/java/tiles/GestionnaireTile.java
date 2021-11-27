@@ -53,6 +53,8 @@ public class GestionnaireTile {
         ajoutTiles("assets/loot/flask_1",cptTiles,false);
         ajoutTiles("assets/loot/weapon_1",cptTiles,false);
 
+        ajoutTiles("assets/teleportation/hole_for_tp",cptTiles,false);
+
 
 
     }
