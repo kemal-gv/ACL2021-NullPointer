@@ -1,10 +1,15 @@
 package tiles;
 
 import framerate.Timer;
+import models.HealthBar;
+import models.Monstre;
 import render.Animation;
 import render.Camera;
 import render.Shader;
 import render.Texture;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class AnimatedTile extends Tile {
     protected Texture[] frames;
@@ -91,3 +96,7 @@ public class AnimatedTile extends Tile {
     }
 
 }
+
+
+
+

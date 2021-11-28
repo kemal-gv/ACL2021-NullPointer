@@ -96,7 +96,7 @@ public class Game {
         ArrayList<Monstre> monstres = new ArrayList<>();
         Random random = new Random();
         ArrayList<HealthBar> hbMonstres = new ArrayList<>();
-        for (int i = 0; i<5; i++){
+        for (int i = 0; i<4; i++){
             int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
             int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
             int vie = random.nextInt(100 + 1) + 1;
@@ -282,6 +282,27 @@ public class Game {
 
 
             if(canRender){
+                if(monstres.size()==0){
+                     monstres = new ArrayList<>();
+                     random = new Random();
+                    hbMonstres = new ArrayList<>();
+                    for ( i = 0; i<20; i++){
+                        int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
+                        int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
+                        int vie = random.nextInt(100 + 1) + 1;
+                        System.out.println("vie monstre" +vie);
+                        Monstre monstre = new Monstre(vie, randX,randY);
+                        HealthBar hbMonstre = new HealthBar(vie);
+
+                        monstres.add(monstre);
+                        hbMonstres.add(hbMonstre);
+                    }
+
+                     world = new Labyrinthe("level0",joueur,win);
+                    //SEt point de spawn joueur
+                    joueur.setPos(3,-3);
+                    world.setMonstre(monstres);
+                }
                 glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
                 tex.bind(0);
 

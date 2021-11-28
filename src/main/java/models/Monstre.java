@@ -366,7 +366,7 @@ public class Monstre {
 
 				// Is there a path in the direction (= is it a free field in the labyrinth)?
 				// And has that field not yet been discovered?
-				if(newY>=0 && newX>=0)
+				if(newY>=0 && newX>=0 && newY<64 && newX<64)
 				if (!lab[newY][newX] && !discovered[newY][newX]) {
 					// "Discover" and enqueue that field
 					discovered[newY][newX] = true;
