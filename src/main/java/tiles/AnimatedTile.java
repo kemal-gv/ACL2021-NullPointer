@@ -34,7 +34,7 @@ public class AnimatedTile extends Tile {
         this.cooldown=cooldown;
         this.frames = new Texture[amount];
         for (int i = 0; i < amount; i++) {
-            System.out.println(filename + "/" + i + ".png");
+            //System.out.println(filename + "/" + i + ".png");
             this.frames[i] = new Texture(filename + "/" + i + ".png");
         }
     }
@@ -45,34 +45,35 @@ public class AnimatedTile extends Tile {
 
     protected boolean open=false;
     protected int cpt=0;
-    public void bind(int sampler) {
-        this.currentTime = Timer.getTime();
-        this.elapsedTime += currentTime - lastTime;
 
-        if (elapsedTime >= fps) {
-            if(cooldown) {
-                if (texturePointer == 0) {
-                    cpt = 1;
-                    open=false;
-                }
-                if (elapsedTime > fps * 10) cpt = 0;
-                if (cpt == 0) {
-                    open=true;
+    public void bind(int sampler) {
+            this.currentTime = Timer.getTime();
+            this.elapsedTime += currentTime - lastTime;
+
+            if (elapsedTime >= fps) {
+                if (cooldown) {
+                    if (texturePointer == 0) {
+                        cpt = 1;
+                        open = false;
+                    }
+                    if (elapsedTime > fps * 10) cpt = 0;
+                    if (cpt == 0) {
+                        open = true;
+                        elapsedTime = 0;
+                        texturePointer++;
+                    }
+                } else {
                     elapsedTime = 0;
                     texturePointer++;
                 }
             }
-            else{
-                elapsedTime = 0;
-                texturePointer++;
-            }
-        }
 
-        if (texturePointer >= frames.length) texturePointer = 0;
+            if (texturePointer >= frames.length) texturePointer = 0;
 
-        this.lastTime = currentTime;
+            this.lastTime = currentTime;
 
-        frames[texturePointer].bind(sampler);
+            frames[texturePointer].bind(sampler);
+
     }
 
 

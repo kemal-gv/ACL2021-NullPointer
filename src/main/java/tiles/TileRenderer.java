@@ -10,12 +10,21 @@ import render.Texture;
 
 import java.util.HashMap;
 
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.glAlphaFunc;
+import static org.lwjgl.opengl.GL11C.GL_GREATER;
+import static org.lwjgl.opengl.GL11C.glEnable;
+
 public class TileRenderer {
     private HashMap<String , Texture> tileTexture;
     private Model model;
 
     private GestionnaireTile gestionnaireTile;
 
+
+    public  HashMap<String , Texture> getTileTexture(){
+        return tileTexture;
+    }
     public TileRenderer(){
          this.gestionnaireTile=new GestionnaireTile();
 
@@ -68,6 +77,7 @@ public class TileRenderer {
 
 
     public void renderTile(int id, int x, int y, Shader sh, Matrix4f world, Camera cam){
+
         sh.bind();
         if(tileTexture.containsKey(gestionnaireTile.getTile(id).getTexture())){
             Tile t=gestionnaireTile.getTile(id);

@@ -193,7 +193,7 @@ public class Game {
             while(unprocessed >= frameCap){
 
 
-                if(win.getInput().isKeyPressed(GLFW_KEY_ESCAPE)){
+                if(win.getInput().isKeyPressed(GLFW_KEY_ESCAPE) || joueur.getVie()<=0){
                 //if(win.getInput().isMouseButtonDown(0)){//0=left click 1=right click 2=scroll button
                    glfwSetWindowShouldClose(win.getWindow(),true);
                 }

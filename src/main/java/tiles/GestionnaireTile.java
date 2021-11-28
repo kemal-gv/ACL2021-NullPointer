@@ -1,5 +1,7 @@
 package tiles;
 
+import models.Weapon;
+
 public class GestionnaireTile {
 
     public static Tile tiles[] = new Tile[256];
@@ -51,9 +53,14 @@ public class GestionnaireTile {
         ajoutTiles("assets/chests/full/2",cptTiles,true);
 
         ajoutTiles("assets/loot/flask_1",cptTiles,false);
-        ajoutTiles("assets/loot/weapon_1",cptTiles,false);
+        ajoutTiles("assets/loot/sword_0",cptTiles,false);//20
 
-        ajoutTiles("assets/teleportation/hole_for_tp",cptTiles,false);
+        ajoutTiles("assets/teleportation/hole_for_tp",cptTiles,false);//21
+        ajoutTiles("assets/loot/axe_0",cptTiles,false);//22
+
+        ajoutTiles("assets/sword_anim/0",cptTiles,false);//23
+        ajoutTiles("assets/sword_anim_1/0",cptTiles,false);//24
+
 
 
 

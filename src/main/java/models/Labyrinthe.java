@@ -2,6 +2,7 @@ package models;
 
 import collision.AABB;
 import framerate.Timer;
+import render.Animation;
 import tiles.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -17,9 +18,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.glAlphaFunc;
+import static org.lwjgl.opengl.GL11C.GL_GREATER;
+import static org.lwjgl.opengl.GL11C.glEnable;
 
 
 public class Labyrinthe {
@@ -35,12 +40,21 @@ public class Labyrinthe {
     private byte[] tilesByte;
     private int scale;
 
+    private List<Entity> listEntity;
+
     private ArrayList<Chest> chests=new ArrayList<>();
     private ArrayList<HoleTp> holes=new ArrayList<>();
 
     private static Joueur joueur;
     private Window window;
+
+
     public Labyrinthe(String worldMap,Joueur j,Window w){
+        listEntity=new ArrayList<>();
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+
+
         width=64;
         this.window=w;
         this.joueur=j;
@@ -50,6 +64,11 @@ public class Labyrinthe {
         for(int i=0;i<tiles.length;i++){
             tiles[i]=GestionnaireTile.tiles[0];
         }
+
+
+        //TODO a enlever
+       // listEntity.add(joueur.getW());
+
 
         world=new Matrix4f().setTranslation(new Vector3f(0));
         world.scale(scale);
@@ -99,18 +118,30 @@ public class Labyrinthe {
 
                             Chest c=new Chest(x,y,"Item n°"+x,tilesTmp);
                             chests.add(c);
+                           // Entity e =new Entity(x,y,new Animation("assets/chests/full/0"),t.getId(),tilesTmp);
+                            setTile(t,x,y);
+                           // listEntity.add(e);
+
+
                            // AnimatedChest newAc=(AnimatedChest)t.getTile();
                             //newAc.setC(c);
                             //t=newAc;
                             //System.out.println("X = "+x+" Y = "+y);
                         }
+                        else if(t.getId()==12){
+                            AnimatedTile piece=(AnimatedTile) t;
+                            listEntity.add(new Entity(x,y,t));
+                        }
                         else if(t.getId()==21){
                             //Ici on a un trou donc on doit tp le joueur qd il est dessus
                             holes.add(new HoleTp(blue,green,x,-y));
+                            setTile(t,x,y);
+
+                        }else{
+                            setTile(t,x,y);
                         }
 
 
-                        setTile(t,x,y);
                     }
 
                 }
@@ -119,6 +150,9 @@ public class Labyrinthe {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        joueur.setW(new Weapon(23,"assets/sword_anim/0","assets/sword_anim/",6,15,true,joueur.getPosX(),joueur.getPosY()));
+
 
 
 
@@ -166,7 +200,7 @@ public class Labyrinthe {
                 //Ici il y a des spikes on vérifie si ils sont "ouverts"
                 AnimatedTile spike = (AnimatedTile) t;
                 if (spike.isOpen()) {
-                    joueur.setVie(joueur.getVie() - 0.2);
+                    joueur.setVie(joueur.getVie() - 1);
                 }
             }
 
@@ -180,24 +214,44 @@ public class Labyrinthe {
 
                 //potion ici
                 System.out.println("Potion rammasée, un peu de vie pour toi <3");
-                setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+                //setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
                 if (joueur.getVie() + 30 >= 100) {
                     joueur.setVie(100);
                 } else {
                     joueur.setVie(joueur.getVie() + 30);
                 }
+                removeEntity((int)x,(int)y);
+
+            }
+            if(t.getId()==23 || t.getId()==24){
+
+                //ICi il a une arme ! on change l'arme du joueur
+                if(t.getId()==23) {
+
+                    joueur.setW(new Weapon(23, "assets/sword_anim/0", "assets/sword_anim/", 6, 15, true, joueur.getPosX(), joueur.getPosY()));
+                    joueur.setAttaque(4);
+                } else{
+                    joueur.setW(new Weapon(24,"assets/sword_anim_1/0","assets/sword_anim_1/",8,15,true,joueur.getPosX(),joueur.getPosY()));
+                    joueur.setAttaque(6);
+                }
+
+                removeEntity((int)x,(int)y);
+
+
             }
 
-            if (t.getId() == 12) {
+            if (getElementPlateau((int)x,(int)y).getId()==12) {
                 //Verif pièces
 
 
                 //pièce ici
                 System.out.println("Pièce rammasée, un peu de point pour toi <3");
-                setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+                //setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+                removeEntity((int)x,(int)y);
 
             }
 
+            joueur.setPosArme();
 
             //Verification si il y a une porte aux alentours
             int posx = (int) x;
@@ -218,6 +272,18 @@ public class Labyrinthe {
             //Verification pour les coffres
 
 
+            for(Monstre m : listMonstres){
+                m.pathFinding(posx,posy,this);
+
+            }
+
+
+
+            //Render weapon
+            //Condition pr savoir quelle arme le jouer possède
+
+
+
             ////
             //       if(t.getId()!=0)
 //            System.out.println("T = "+t.getId());
@@ -233,6 +299,47 @@ public class Labyrinthe {
             }
         }
 
+        joueur.setPosArme();
+      //  joueur.getW().setPos(((((joueur.getPosX()/2)+0.5f)-(5/2)))+2,-((((joueur.getPosY()/2)+0.5f)-(5/2)))-2);
+
+        //joueur.getW().render(shader,cam,world);
+        for(Entity e:listEntity){
+            if(e.getTile().getId()==13)
+                //Porte
+                tileRenderer.renderTile(13,(int)e.getPosX(),(int)-e.getPosY(),shader,world,cam);
+            else
+                e.render(e.getId(),e.getPosX(),-e.getPosY(),shader,world,cam, tileRenderer.getGestionnaireTile(), tileRenderer);
+        }
+        if(joueur.getW()!=null){
+            Weapon w=joueur.getW();
+
+            if(window.getInput().isKeyDown(GLFW_KEY_S)){
+                joueur.animationAttaque();
+                for(Monstre m : listMonstres){
+                    int posx= (int) Math.ceil(((((m.getPosX()/2)+0.5f)-(5/2)))+1);
+                    int posy = (int) Math.ceil(((((-m.getPosY()/2)+0.5f)-(5/2)))+1.15);
+
+                    if((posx==x && posy==y) || (posx==x+1 && posy==y) || (posx==x+1 && posy==y-1) ){
+                        m.setVie(m.getVie()-w.getAttaqueDegat());
+
+                    }
+                }
+            }
+
+
+
+            w.render(w.getPosX(),-w.getPosY(),shader,world,cam);
+        }
+
+
+        Monstre tmp=null;
+        for(Monstre m:listMonstres){
+            if(m.getVie()<=0)
+                tmp=m;
+
+        }
+        listMonstres.remove(tmp);
+
     }
 
     private void verifCollisionMonstre(int x,int y) {
@@ -241,12 +348,9 @@ public class Labyrinthe {
             int posy = (int) Math.ceil(((((-m.getPosY()/2)+0.5f)-(5/2)))+1.15);
 
             if(posx==x && posy==y){
-                joueur.setVie(joueur.getVie()-0.5);
-                if(window.getInput().isKeyDown(GLFW_KEY_F)) {
-                    m.setVie(m.getVie()-5);
-                }
+                joueur.setVie(joueur.getVie()-1.5);
 
-                    System.out.println("COLLISION !");
+
             }
         }
     }
@@ -267,7 +371,6 @@ public class Labyrinthe {
 
 
     public void verifHoles(int x,int y){
-        System.out.println(x+" , "+y);
 
         for(HoleTp hole:holes){
             if(hole.getPosX()==x && hole.getPosY()==-y) {
@@ -277,6 +380,17 @@ public class Labyrinthe {
         }
     }
 
+    public void removeEntity(int x,int y){
+        Entity e=null;
+        for(Entity entity:listEntity){
+            if(entity.getPosX() == x && entity.getPosY()==y){
+                e=entity;
+            }
+        }
+        if(e!=null){
+            listEntity.remove(e);
+        }
+    }
     private void takeLoot(int posx, int posy) {
 
         Tile[] porteProximite=new Tile[]{getElementPlateau(posx+1,posy) , getElementPlateau(posx-1,posy)
@@ -293,15 +407,46 @@ public class Labyrinthe {
                     Chest c =getChest(pos[i][0],pos[i][1]);
                     if(!c.isEmpty()) {
                         c.setEmpty(true);
-                        System.out.println("Le coffre : " + c.getItem() + " est ouvert. *loot*");
-                        System.out.println("Le coffre vide ici : "+pos[i][0] +" et "+pos[i][1]);
-                        setTile(GestionnaireTile.tiles[17], pos[i][0], pos[i][1]);
+                      //  System.out.println("Le coffre : " + c.getItem() + " est ouvert. *loot*");
+                       // System.out.println("Le coffre vide ici : "+pos[i][0] +" et "+pos[i][1]);
+                        setTile(GestionnaireTile.tiles[17], pos[i][0], pos[i][1]);//coffre ouvert
 
                         //Verif si l'endroit est vide :
                         //Posé le loot a recup dans la classe CHEST
-                        setTile(GestionnaireTile.tiles[19],pos[i][0],pos[i][1]-1 );
-                        setTile(GestionnaireTile.tiles[19],pos[i][0]+1,pos[i][1] );
-                        setTile(GestionnaireTile.tiles[19],pos[i][0]-1,pos[i][1] );
+                        Random random = new Random();
+                        int nb;
+                        nb = random.nextInt(3);
+                        if(nb==2){
+                            //Il a une arme !!!
+                            //Où ?
+                            nb=random.nextInt(3);
+                            //Laquelle ?
+                            int nbArme=random.nextInt(2);
+
+                            switch(nb){
+                                case 0:
+                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[23+nbArme]));
+                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
+                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
+                                    break;
+                                case 1:
+                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
+                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[23+nbArme]));
+                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
+                                    break;
+                                case 2:
+                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
+                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
+                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[23+nbArme]));
+                                    break;
+                            }
+                        }
+                        else{
+                            listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
+                            listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
+                            listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
+                        }
+
 
                     }
                     //AnimatedChest ac= (AnimatedChest) porteProximite[i];
@@ -332,7 +477,6 @@ public class Labyrinthe {
             if(porteProximite[i].getId()==15) {
                 if(window.getInput().isKeyDown(GLFW_KEY_F) && !animationChest) {
                     animationChest=true;
-                    System.out.println("OEPNNE");
                     //AnimatedChest ac= (AnimatedChest) porteProximite[i];
                     //ac.setOpen();
                     //AnimatedChest ac=(AnimatedChest) GestionnaireTile.tiles[16];
@@ -340,8 +484,6 @@ public class Labyrinthe {
                     Chest c = getChest(pos[i][0],pos[i][1]);
 
 
-                    System.out.println("Item number : "+c.getItem());
-                    AnimatedChest ac=c.getAc();
                     //ac.setOpen();
                     AnimatedChest ac2= (AnimatedChest) GestionnaireTile.tiles[16];
                     ac2.setOpen();
@@ -394,7 +536,10 @@ public class Labyrinthe {
         for(int i=0;i<porteProximite.length;i++){
             if(porteProximite[i].getId()==13) {
                 if(window.getInput().isKeyDown(GLFW_KEY_F)) {
-                    setTile(GestionnaireTile.tiles[14],pos[i][0],pos[i][1]);
+                    listEntity.add(new Entity(pos[i][0],pos[i][1],GestionnaireTile.tiles[14]));
+                    setTile(GestionnaireTile.tiles[0],pos[i][0],pos[i][1] );
+                    //(GestionnaireTile.tiles[14],pos[i][0],pos[i][1]);
+
                 }
             }
         }
@@ -430,6 +575,14 @@ public class Labyrinthe {
 
     }
 
+    public void setEntity(Entity entity, int x,int y){
+        //tiles[x + y *width]=tile;
+        if(entity.getTile().isSolid()){
+            boundingBoxes[x+y*width]=new AABB(new Vector2f(x*2,-y*2),new Vector2f(1,1));
+        }else{
+            boundingBoxes[x+y*width]=null;
+        }
+    }
 
     public void setTile(Tile tile, int x,int y){
         tiles[x + y *width]=tile;
@@ -446,6 +599,11 @@ public class Labyrinthe {
 
     public Tile getElementPlateau(int x,int y){
         try {
+            for(Entity e: listEntity){
+                if(e.getPosX()==x && e.getPosY()==y)
+                    return e.getTile();
+            }
+
             return tiles[x+y*width];
             //return GestionnaireTile.tiles[tiles[x + y * width]];
         }catch (ArrayIndexOutOfBoundsException e){

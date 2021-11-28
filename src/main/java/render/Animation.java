@@ -25,23 +25,46 @@ public class Animation {
         }
     }
 
+    private boolean weapon=false;
+    public Animation( String filename) {
+        this.texturePointer = 0;
+        this.elapsedTime = 0;
+        this.currentTime = 0;
+        this.lastTime = Timer.getTime();
+        this.fps = 1.0 / 10;
+
+
+        this.frames = new Texture[1];
+        this.frames[0] = new Texture(filename + ".png");
+        weapon=true;
+    }
+
     public void bind() {
         bind(0);
     }
 
     public void bind(int sampler) {
-        this.currentTime = Timer.getTime();
-        this.elapsedTime += currentTime - lastTime;
+        if(weapon){
+            frames[0].bind(sampler);
 
-        if (elapsedTime >= fps) {
-            elapsedTime = 0;
-            texturePointer++;
+        }else {
+            this.currentTime = Timer.getTime();
+            this.elapsedTime += currentTime - lastTime;
+
+            if (elapsedTime >= fps) {
+                elapsedTime = 0;
+                texturePointer++;
+            }
+
+            if (texturePointer >= frames.length) texturePointer = 0;
+
+            this.lastTime = currentTime;
+
+            frames[texturePointer].bind(sampler);
         }
+    }
 
-        if (texturePointer >= frames.length) texturePointer = 0;
-
-        this.lastTime = currentTime;
-
-        frames[texturePointer].bind(sampler);
+    public Texture getTexture(){
+        return frames[0];
     }
 }

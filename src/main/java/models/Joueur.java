@@ -2,6 +2,7 @@ package models;
 
 import collision.AABB;
 import collision.Collision;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import render.Animation;
@@ -13,6 +14,7 @@ import windows.Window;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.opengl.GL11.glRotatef;
 
 public class Joueur {
     private double vie;
@@ -23,9 +25,14 @@ public class Joueur {
     private Animation texture;
     private models.Transform tr;
 
+    private Weapon w;
+
     private AABB boundingBox;
 
     public Joueur(int vie, int posX, int posY){
+
+
+
         this.vie = vie;
 
         float[] vertices=new float[]{
@@ -56,7 +63,7 @@ public class Joueur {
                 2,3,0
         };
         model=new Model(vertices,texture,indices);
-        this.texture = new Animation(2,10,"joueur");
+        this.texture = new Animation(2,3,"joueur");
 
 
         AABB box=null;
@@ -96,24 +103,28 @@ public class Joueur {
         }
 
          */
+
+
         if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
             tr.pos.add(new Vector3f(-10*delta,0,0));
         }
-        if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
+         if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
             tr.pos.add(new Vector3f(10*delta,0,0));
         }
-        if(win.getInput().isKeyDown(GLFW_KEY_UP)){
+         if(win.getInput().isKeyDown(GLFW_KEY_UP)){
             tr.pos.add(new Vector3f(0,10*delta,0));
         }
-        if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
+         if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
             tr.pos.add(new Vector3f(0,-10*delta,0));
         }
-        if(win.getInput().isKeyDown(GLFW_KEY_D)){
-            setVie(vie-1);
-        }
+         if(getW()!=null)
+            setPosArme();
+
+
 
         posX = tr.pos.x;
         posY = tr.pos.y;
+
         boundingBox.getCenter().set(posX,posY);
 
         AABB[] boxes=new AABB[25];
@@ -153,15 +164,19 @@ public class Joueur {
                 tr.pos.set(boundingBox.getCenter(),0);
             }
 
+
+
         }
         //System.out.println("POS X du joueur : " + posX + "\nPOS X caméra : " +camera.getPosition().x + "\nwindows diviser par 2 : "+win.getWidth()/2);
         //if (posX>=camera.getPosition().x)
             camera.setPosition(tr.pos.mul(-world.getScale() /* /2f -> -16*/,new Vector3f()));
+        if(w!=null)
+            w.setPos(posX,posY);
+
+        //System.out.println("Joueur : "+getPosX()+","+getPosY()+" et weapon:"+w.getPosX()+","+w.getPosY());
+
     }
 
-    private void openDoor() {
-
-    }
 
     public void render(Shader shader, Camera camera){
         shader.bind();
@@ -171,7 +186,8 @@ public class Joueur {
         model.render();
 
 
-    }
+
+        }
 
     public double getVie(){
         return this.vie;
@@ -190,4 +206,24 @@ public class Joueur {
         return posY;
     }
 
+    public Weapon getW() {
+        return w;
+    }
+
+    public void setW(Weapon w) {
+        this.w = w;
+    }
+
+    public void setPosArme() {
+        getW().setPos(((((getPosX()/2)+0.5f)-(5/2)))+2,-((((getPosY()/2)+0.5f)-(5/2)))-2);
+
+    }
+
+    public void animationAttaque() {
+        w.attaque();
+    }
+
+    public void setAttaque(int atk){
+        w.setAttaqueDegat(atk);
+    }
 }

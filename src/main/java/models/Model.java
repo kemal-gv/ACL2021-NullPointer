@@ -1,5 +1,6 @@
 package models;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -81,6 +82,10 @@ public class Model {
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
 
+
+    }
+
+    public void rotate(){
 
     }
 

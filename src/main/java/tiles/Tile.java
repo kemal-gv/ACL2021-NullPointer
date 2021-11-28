@@ -51,5 +51,9 @@ public class Tile {
         return newT;
     }
 
+    public void bind(){
+
+    }
+
 
 }
