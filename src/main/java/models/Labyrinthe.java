@@ -401,60 +401,61 @@ public class Labyrinthe {
                 {posx,posy+1}
         };
         for(int i=0;i<porteProximite.length;i++){
-            if(porteProximite[i].getId()==18) {
-                if(window.getInput().isKeyDown(GLFW_KEY_F)) {
-                    //System.out.println("LOOOT");
-                    Chest c =getChest(pos[i][0],pos[i][1]);
-                    if(!c.isEmpty()) {
-                        c.setEmpty(true);
-                      //  System.out.println("Le coffre : " + c.getItem() + " est ouvert. *loot*");
-                       // System.out.println("Le coffre vide ici : "+pos[i][0] +" et "+pos[i][1]);
-                        setTile(GestionnaireTile.tiles[17], pos[i][0], pos[i][1]);//coffre ouvert
+            if (porteProximite[i]!= null) {
+                if (porteProximite[i].getId() == 18) {
+                    if (window.getInput().isKeyDown(GLFW_KEY_F)) {
+                        //System.out.println("LOOOT");
+                        Chest c = getChest(pos[i][0], pos[i][1]);
+                        if (!c.isEmpty()) {
+                            c.setEmpty(true);
+                            //  System.out.println("Le coffre : " + c.getItem() + " est ouvert. *loot*");
+                            // System.out.println("Le coffre vide ici : "+pos[i][0] +" et "+pos[i][1]);
+                            setTile(GestionnaireTile.tiles[17], pos[i][0], pos[i][1]);//coffre ouvert
 
-                        //Verif si l'endroit est vide :
-                        //Posé le loot a recup dans la classe CHEST
-                        Random random = new Random();
-                        int nb;
-                        nb = random.nextInt(3);
-                        if(nb==2){
-                            //Il a une arme !!!
-                            //Où ?
-                            nb=random.nextInt(3);
-                            //Laquelle ?
-                            int nbArme=random.nextInt(2);
+                            //Verif si l'endroit est vide :
+                            //Posé le loot a recup dans la classe CHEST
+                            Random random = new Random();
+                            int nb;
+                            nb = random.nextInt(3);
+                            if (nb == 2) {
+                                //Il a une arme !!!
+                                //Où ?
+                                nb = random.nextInt(3);
+                                //Laquelle ?
+                                int nbArme = random.nextInt(2);
 
-                            switch(nb){
-                                case 0:
-                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[23+nbArme]));
-                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
-                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
-                                    break;
-                                case 1:
-                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
-                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[23+nbArme]));
-                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
-                                    break;
-                                case 2:
-                                    listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
-                                    listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
-                                    listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[23+nbArme]));
-                                    break;
+                                switch (nb) {
+                                    case 0:
+                                        listEntity.add(new Entity(pos[i][0], pos[i][1] - 1, GestionnaireTile.tiles[23 + nbArme]));
+                                        listEntity.add(new Entity(pos[i][0] + 1, pos[i][1], GestionnaireTile.tiles[19]));
+                                        listEntity.add(new Entity(pos[i][0] - 1, pos[i][1], GestionnaireTile.tiles[19]));
+                                        break;
+                                    case 1:
+                                        listEntity.add(new Entity(pos[i][0], pos[i][1] - 1, GestionnaireTile.tiles[19]));
+                                        listEntity.add(new Entity(pos[i][0] + 1, pos[i][1], GestionnaireTile.tiles[23 + nbArme]));
+                                        listEntity.add(new Entity(pos[i][0] - 1, pos[i][1], GestionnaireTile.tiles[19]));
+                                        break;
+                                    case 2:
+                                        listEntity.add(new Entity(pos[i][0], pos[i][1] - 1, GestionnaireTile.tiles[19]));
+                                        listEntity.add(new Entity(pos[i][0] + 1, pos[i][1], GestionnaireTile.tiles[19]));
+                                        listEntity.add(new Entity(pos[i][0] - 1, pos[i][1], GestionnaireTile.tiles[23 + nbArme]));
+                                        break;
+                                }
+                            } else {
+                                listEntity.add(new Entity(pos[i][0], pos[i][1] - 1, GestionnaireTile.tiles[19]));
+                                listEntity.add(new Entity(pos[i][0] + 1, pos[i][1], GestionnaireTile.tiles[19]));
+                                listEntity.add(new Entity(pos[i][0] - 1, pos[i][1], GestionnaireTile.tiles[19]));
                             }
-                        }
-                        else{
-                            listEntity.add(new Entity(pos[i][0],pos[i][1]-1,GestionnaireTile.tiles[19]));
-                            listEntity.add(new Entity(pos[i][0]+1,pos[i][1],GestionnaireTile.tiles[19]));
-                            listEntity.add(new Entity(pos[i][0]-1,pos[i][1],GestionnaireTile.tiles[19]));
-                        }
 
 
+                        }
+                        //AnimatedChest ac= (AnimatedChest) porteProximite[i];
+                        //ac.setOpen();
+
+                        // Tile t= GestionnaireTile.tiles[16];
+                        // if(ac.isOpened())
+                        //     setTile(t, pos[i][0],pos[i][1]);
                     }
-                    //AnimatedChest ac= (AnimatedChest) porteProximite[i];
-                    //ac.setOpen();
-
-                   // Tile t= GestionnaireTile.tiles[16];
-                   // if(ac.isOpened())
-                   //     setTile(t, pos[i][0],pos[i][1]);
                 }
             }
         }
