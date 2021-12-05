@@ -48,6 +48,8 @@ public class Labyrinthe {
     private static Joueur joueur;
     private Window window;
 
+    private Audio audio = new Audio();
+
 
     public Labyrinthe(String worldMap,Joueur j,Window w){
         listEntity=new ArrayList<>();
@@ -211,9 +213,10 @@ public class Labyrinthe {
             if (t.getId() == 19) {
                 //Verif potion
 
+                audio.soundPotion();
 
                 //potion ici
-                System.out.println("Potion rammasée, un peu de vie pour toi <3");
+                //System.out.println("Potion ramassée, un peu de vie pour toi");
                 //setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
                 if (joueur.getVie() + 30 >= 100) {
                     joueur.setVie(100);
@@ -230,9 +233,11 @@ public class Labyrinthe {
 
                     joueur.setW(new Weapon(23, "assets/sword_anim/0", "assets/sword_anim/", 6, 15, true, joueur.getPosX(), joueur.getPosY()));
                     joueur.setAttaque(4);
+                    audio.soundChangeSword();
                 } else{
                     joueur.setW(new Weapon(24,"assets/sword_anim_1/0","assets/sword_anim_1/",8,15,true,joueur.getPosX(),joueur.getPosY()));
                     joueur.setAttaque(6);
+                    audio.soundChangeSword();
                 }
 
                 removeEntity((int)x,(int)y);
@@ -245,10 +250,10 @@ public class Labyrinthe {
 
 
                 //pièce ici
-                System.out.println("Pièce rammasée, un peu de point pour toi <3");
+                //System.out.println("Pièce ramassée, un peu de point pour toi");
                 //setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
                 removeEntity((int)x,(int)y);
-
+                audio.soundCoin();
             }
 
             joueur.setPosArme();
@@ -310,10 +315,16 @@ public class Labyrinthe {
             else
                 e.render(e.getId(),e.getPosX(),-e.getPosY(),shader,world,cam, tileRenderer.getGestionnaireTile(), tileRenderer);
         }
+
         if(joueur.getW()!=null){
             Weapon w=joueur.getW();
 
+
+
             if(window.getInput().isKeyDown(GLFW_KEY_S)){
+
+
+
                 joueur.animationAttaque();
                 for(Monstre m : listMonstres){
                     int posx= (int) Math.ceil(((((m.getPosX()/2)+0.5f)-(5/2)))+1);
@@ -323,6 +334,7 @@ public class Labyrinthe {
                         m.setVie(m.getVie()-w.getAttaqueDegat());
 
                     }
+                    audio.soundDyingMonster(m);
                 }
             }
 
@@ -404,6 +416,7 @@ public class Labyrinthe {
             if (porteProximite[i]!= null) {
                 if (porteProximite[i].getId() == 18) {
                     if (window.getInput().isKeyDown(GLFW_KEY_F)) {
+
                         //System.out.println("LOOOT");
                         Chest c = getChest(pos[i][0], pos[i][1]);
                         if (!c.isEmpty()) {
@@ -477,6 +490,7 @@ public class Labyrinthe {
         for(int i=0;i<porteProximite.length;i++){
             if(porteProximite[i].getId()==15) {
                 if(window.getInput().isKeyDown(GLFW_KEY_F) && !animationChest) {
+                    audio.soundChest();
                     animationChest=true;
                     //AnimatedChest ac= (AnimatedChest) porteProximite[i];
                     //ac.setOpen();
@@ -540,7 +554,7 @@ public class Labyrinthe {
                     listEntity.add(new Entity(pos[i][0],pos[i][1],GestionnaireTile.tiles[14]));
                     setTile(GestionnaireTile.tiles[0],pos[i][0],pos[i][1] );
                     //(GestionnaireTile.tiles[14],pos[i][0],pos[i][1]);
-
+                    audio.soundDoor();
                 }
             }
         }

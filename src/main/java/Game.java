@@ -169,16 +169,19 @@ public class Game {
 
         Audio audio = new Audio();
         try {
-            audio.play();
+            audio.play("ruins");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         int i = 1;
 
+
+
         // while(!glfwWindowShouldClose(window)){
         while(!win.shouldClose()){
 
+            audio.soundSword(win);
 
             boolean canRender=false;
             double time2=Timer.getTime();
@@ -190,13 +193,16 @@ public class Game {
 
             time = time2;//To avoid the game goes exponentially faster
 
+
             while(unprocessed >= frameCap){
+
 
 
                 if(win.getInput().isKeyPressed(GLFW_KEY_ESCAPE) || joueur.getVie()<=0){
                 //if(win.getInput().isMouseButtonDown(0)){//0=left click 1=right click 2=scroll button
                    glfwSetWindowShouldClose(win.getWindow(),true);
                 }
+
 
                 /*
                 if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
