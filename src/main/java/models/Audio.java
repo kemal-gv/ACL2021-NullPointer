@@ -10,15 +10,15 @@ import java.io.File;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 
-public class Audio{
+public class Audio {
 
     private Clip clip = null;
 
-    public Audio(){
+    public Audio() {
 
     }
 
-    public void play(String audioTitle) throws Exception{
+    public void play(String audioTitle) throws Exception {
         if (clip != null && clip.isOpen()) clip.close();
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/audios/" + audioTitle + ".wav").getAbsoluteFile());
         clip = AudioSystem.getClip();
@@ -32,9 +32,9 @@ public class Audio{
         clip.start();
     }
 
-    public void soundSword(Window win){
+    public void soundSword(Window win) {
         clip = null;
-        if(win.getInput().isKeyPressed(GLFW_KEY_S)){
+        if (win.getInput().isKeyPressed(GLFW_KEY_S)) {
             try {
                 play("sword");
             } catch (Exception e) {
@@ -43,9 +43,9 @@ public class Audio{
         }
     }
 
-    public void soundDyingMonster(Monstre m){
+    public void soundDyingMonster(Monstre m) {
         clip = null;
-        if (m.getVie()<=0){
+        if (m.getVie() <= 0) {
             try {
                 play("dying_monster");
             } catch (Exception e) {
@@ -54,7 +54,7 @@ public class Audio{
         }
     }
 
-    public void soundDoor(){
+    public void soundDoor() {
         clip = null;
         try {
             play("door");
@@ -63,7 +63,7 @@ public class Audio{
         }
     }
 
-    public void soundChest(){
+    public void soundChest() {
         clip = null;
         try {
             play("chest");
@@ -72,7 +72,7 @@ public class Audio{
         }
     }
 
-    public void soundPotion(){
+    public void soundPotion() {
         clip = null;
         try {
             play("potion");
@@ -81,7 +81,7 @@ public class Audio{
         }
     }
 
-    public void soundChangeSword(){
+    public void soundChangeSword() {
         clip = null;
         try {
             play("change_sword");
@@ -90,7 +90,7 @@ public class Audio{
         }
     }
 
-    public void soundCoin(){
+    public void soundCoin() {
         clip = null;
         try {
             play("coin");

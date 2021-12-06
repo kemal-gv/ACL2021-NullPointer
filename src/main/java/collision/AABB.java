@@ -1,68 +1,66 @@
 package collision;
 
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 public class AABB {
-    private Vector2f center,halfExtent;
+    private Vector2f center, halfExtent;
 
-    public AABB(Vector2f center,Vector2f halfExtent){
-        this.center=center;
+    public AABB(Vector2f center, Vector2f halfExtent) {
+        this.center = center;
 
-        this.halfExtent=halfExtent;
+        this.halfExtent = halfExtent;
     }
 
-    public Collision getCollision(AABB box2){
-        Vector2f distance = box2.center.sub(center,new Vector2f());
+    public Collision getCollision(AABB box2) {
+        Vector2f distance = box2.center.sub(center, new Vector2f());
 
-        distance.x=Math.abs(distance.x);
-        distance.y=Math.abs(distance.y);
+        distance.x = Math.abs(distance.x);
+        distance.y = Math.abs(distance.y);
 
-        distance.sub(halfExtent.add(box2.halfExtent,new Vector2f()));
+        distance.sub(halfExtent.add(box2.halfExtent, new Vector2f()));
 
 
-        return new Collision(distance,(distance.x < 0 && distance.y < 0 ));
+        return new Collision(distance, (distance.x < 0 && distance.y < 0));
     }
 
-    public boolean getCollisionInter(AABB box2){
-        Vector2f distance = box2.center.sub(center,new Vector2f());
+    public boolean getCollisionInter(AABB box2) {
+        Vector2f distance = box2.center.sub(center, new Vector2f());
 
-        distance.x=(float)Math.abs(distance.x);
-        distance.y=(float)Math.abs(distance.y);
+        distance.x = (float) Math.abs(distance.x);
+        distance.y = (float) Math.abs(distance.y);
 
-        distance.sub(halfExtent.add(box2.halfExtent,new Vector2f()));
+        distance.sub(halfExtent.add(box2.halfExtent, new Vector2f()));
 
 
-        return (distance.x < 0 && distance.y < 0 );
+        return (distance.x < 0 && distance.y < 0);
     }
 
-    public Vector2f getCenter(){
+    public Vector2f getCenter() {
         return center;
     }
 
-    public Vector2f getHalfExtent(){
+    public Vector2f getHalfExtent() {
         return halfExtent;
     }
 
-    public void correctPosition(AABB box2,Collision data){
-        Vector2f correction = box2.center.sub(center,new Vector2f());
-        if(data.distance.x > data.distance.y){
+    public void correctPosition(AABB box2, Collision data) {
+        Vector2f correction = box2.center.sub(center, new Vector2f());
+        if (data.distance.x > data.distance.y) {
             //X axis
-            if(correction.x > 0){
-                center.add(data.distance.x,0);
-            }else{
-                center.add(-data.distance.x,0);
+            if (correction.x > 0) {
+                center.add(data.distance.x, 0);
+            } else {
+                center.add(-data.distance.x, 0);
             }
-        }else{
+        } else {
             //Y axis
-            if(correction.y > 0){
-                center.add(0,data.distance.y);
-            }else{
-                center.add(0,-data.distance.y);
+            if (correction.y > 0) {
+                center.add(0, data.distance.y);
+            } else {
+                center.add(0, -data.distance.y);
             }
         }
     }
-
 
 
 }

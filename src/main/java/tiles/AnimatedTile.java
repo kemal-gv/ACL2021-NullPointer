@@ -1,15 +1,7 @@
 package tiles;
 
 import framerate.Timer;
-import models.HealthBar;
-import models.Monstre;
-import render.Animation;
-import render.Camera;
-import render.Shader;
 import render.Texture;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class AnimatedTile extends Tile {
     protected Texture[] frames;
@@ -25,10 +17,10 @@ public class AnimatedTile extends Tile {
     protected int amount;
 
 
-    public AnimatedTile(int id, String texture,String filename,int amount,int fps,boolean cooldown) {
+    public AnimatedTile(int id, String texture, String filename, int amount, int fps, boolean cooldown) {
         super(id, texture);
-        this.amount=amount;
-        this.fileName=filename;
+        this.amount = amount;
+        this.fileName = filename;
         this.setAnimated(true);
         this.texturePointer = 0;
         this.elapsedTime = 0;
@@ -36,7 +28,7 @@ public class AnimatedTile extends Tile {
         this.lastTime = Timer.getTime();
         this.fps = 1.0 / fps;
 
-        this.cooldown=cooldown;
+        this.cooldown = cooldown;
         this.frames = new Texture[amount];
         for (int i = 0; i < amount; i++) {
             //System.out.println(filename + "/" + i + ".png");
@@ -48,36 +40,36 @@ public class AnimatedTile extends Tile {
         bind(0);
     }
 
-    protected boolean open=false;
-    protected int cpt=0;
+    protected boolean open = false;
+    protected int cpt = 0;
 
     public void bind(int sampler) {
-            this.currentTime = Timer.getTime();
-            this.elapsedTime += currentTime - lastTime;
+        this.currentTime = Timer.getTime();
+        this.elapsedTime += currentTime - lastTime;
 
-            if (elapsedTime >= fps) {
-                if (cooldown) {
-                    if (texturePointer == 0) {
-                        cpt = 1;
-                        open = false;
-                    }
-                    if (elapsedTime > fps * 10) cpt = 0;
-                    if (cpt == 0) {
-                        open = true;
-                        elapsedTime = 0;
-                        texturePointer++;
-                    }
-                } else {
+        if (elapsedTime >= fps) {
+            if (cooldown) {
+                if (texturePointer == 0) {
+                    cpt = 1;
+                    open = false;
+                }
+                if (elapsedTime > fps * 10) cpt = 0;
+                if (cpt == 0) {
+                    open = true;
                     elapsedTime = 0;
                     texturePointer++;
                 }
+            } else {
+                elapsedTime = 0;
+                texturePointer++;
             }
+        }
 
-            if (texturePointer >= frames.length) texturePointer = 0;
+        if (texturePointer >= frames.length) texturePointer = 0;
 
-            this.lastTime = currentTime;
+        this.lastTime = currentTime;
 
-            frames[texturePointer].bind(sampler);
+        frames[texturePointer].bind(sampler);
 
     }
 
@@ -86,9 +78,9 @@ public class AnimatedTile extends Tile {
         return open;
     }
 
-    public AnimatedChest getTile()  {
-        AnimatedChest newT=new AnimatedChest(id,  texture,  fileName,  amount,  (int)fps,  cooldown);
-        if(newT.isSolid())
+    public AnimatedChest getTile() {
+        AnimatedChest newT = new AnimatedChest(id, texture, fileName, amount, (int) fps, cooldown);
+        if (newT.isSolid())
             newT.setSolid();
 
         return newT;

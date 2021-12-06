@@ -6,11 +6,11 @@ public class HoleTp {
     private int posX;
     private int posY;
 
-    public HoleTp(int tpX,int tpY,int posX,int posY){
-        this.tpX=tpX;
-        this.tpY=tpY;
-        this.posX=posX;
-        this.posY=posY;
+    public HoleTp(int tpX, int tpY, int posX, int posY) {
+        this.tpX = tpX;
+        this.tpY = tpY;
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public int getTpX() {

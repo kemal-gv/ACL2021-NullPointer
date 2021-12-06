@@ -25,8 +25,9 @@ public class Animation {
         }
     }
 
-    private boolean weapon=false;
-    public Animation( String filename) {
+    private boolean weapon = false;
+
+    public Animation(String filename) {
         this.texturePointer = 0;
         this.elapsedTime = 0;
         this.currentTime = 0;
@@ -36,7 +37,7 @@ public class Animation {
 
         this.frames = new Texture[1];
         this.frames[0] = new Texture(filename + ".png");
-        weapon=true;
+        weapon = true;
     }
 
     public void bind() {
@@ -44,10 +45,10 @@ public class Animation {
     }
 
     public void bind(int sampler) {
-        if(weapon){
+        if (weapon) {
             frames[0].bind(sampler);
 
-        }else {
+        } else {
             this.currentTime = Timer.getTime();
             this.elapsedTime += currentTime - lastTime;
 
@@ -64,7 +65,7 @@ public class Animation {
         }
     }
 
-    public Texture getTexture(){
+    public Texture getTexture() {
         return frames[0];
     }
 }

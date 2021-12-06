@@ -17,16 +17,16 @@ public class Shader {
     private int fragmentShader;//Fragment shader
     private FloatBuffer floatBuffer;
 
-    public Shader(String filename){
-        floatBuffer=BufferUtils.createFloatBuffer(16);
+    public Shader(String filename) {
+        floatBuffer = BufferUtils.createFloatBuffer(16);
 
-        program=glCreateProgram();
+        program = glCreateProgram();
         verticeShader = glCreateShader(GL_VERTEX_SHADER);
 
-        glShaderSource(verticeShader,readFile(filename+".vs"));
+        glShaderSource(verticeShader, readFile(filename + ".vs"));
         //COmpile the shader
         glCompileShader(verticeShader);
-        if(glGetShaderi(verticeShader,GL_COMPILE_STATUS) != 1){
+        if (glGetShaderi(verticeShader, GL_COMPILE_STATUS) != 1) {
             //Erreur ds la compilation du shader
             System.err.println(glGetShaderInfoLog(verticeShader));
             System.exit(1);
@@ -35,51 +35,50 @@ public class Shader {
 
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-        glShaderSource(fragmentShader,readFile(filename+".fs"));
+        glShaderSource(fragmentShader, readFile(filename + ".fs"));
         //COmpile the shader
         glCompileShader(fragmentShader);
-        if(glGetShaderi(fragmentShader,GL_COMPILE_STATUS) != 1){
+        if (glGetShaderi(fragmentShader, GL_COMPILE_STATUS) != 1) {
             //Erreur ds la compilation du shader
             System.err.println(glGetShaderInfoLog(fragmentShader));
             System.exit(1);
         }
 
-        glAttachShader(program,verticeShader);
-        glAttachShader(program,fragmentShader);
+        glAttachShader(program, verticeShader);
+        glAttachShader(program, fragmentShader);
 
-        glBindAttribLocation(program,0,"vertices");
-        glBindAttribLocation(program,1,"textures");
+        glBindAttribLocation(program, 0, "vertices");
+        glBindAttribLocation(program, 1, "textures");
 
 
         glLinkProgram(program);
-        if(glGetProgrami(program,GL_LINK_STATUS) != 1){
+        if (glGetProgrami(program, GL_LINK_STATUS) != 1) {
             System.err.println(glGetShaderInfoLog(fragmentShader));
             System.exit(1);
         }
         glValidateProgram(program);
-        if(glGetProgrami(program,GL_VALIDATE_STATUS) != 1){
+        if (glGetProgrami(program, GL_VALIDATE_STATUS) != 1) {
             System.err.println(glGetShaderInfoLog(fragmentShader));
             System.exit(1);
         }
 
 
-
     }
 
-    public void bind(){
+    public void bind() {
 
 
         glUseProgram(program);
     }
 
-    private String readFile(String filename){
-        StringBuilder strB=new StringBuilder();
+    private String readFile(String filename) {
+        StringBuilder strB = new StringBuilder();
         BufferedReader br;
-        try{
-            String url= Shader.class.getClassLoader().getResource("shaders/"+filename).getFile();
-            br=new BufferedReader(new FileReader(new File(url)));
+        try {
+            String url = Shader.class.getClassLoader().getResource("shaders/" + filename).getFile();
+            br = new BufferedReader(new FileReader(new File(url)));
             String line;
-            while((line=br.readLine()) != null ){
+            while ((line = br.readLine()) != null) {
                 strB.append(line);
                 strB.append("\n");
 
@@ -87,7 +86,7 @@ public class Shader {
 
             br.close();
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -95,14 +94,14 @@ public class Shader {
         return strB.toString();
     }
 
-    public void setUniform(String name, Matrix4f value){
-        int location = glGetUniformLocation(program,name);
-        FloatBuffer buffer=floatBuffer;//= BufferUtils.createFloatBuffer(16);//4x4 of data (a matrix)
+    public void setUniform(String name, Matrix4f value) {
+        int location = glGetUniformLocation(program, name);
+        FloatBuffer buffer = floatBuffer;//= BufferUtils.createFloatBuffer(16);//4x4 of data (a matrix)
         value.get(buffer);
 
 
-        if(location != -1){
-            glUniformMatrix4fv(location,false,buffer);
+        if (location != -1) {
+            glUniformMatrix4fv(location, false, buffer);
         }
     }
 
