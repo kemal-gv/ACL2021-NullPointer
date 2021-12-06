@@ -3,17 +3,11 @@ package tiles;
 import models.Model;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import render.Animation;
 import render.Camera;
 import render.Shader;
 import render.Texture;
 
 import java.util.HashMap;
-
-import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
-import static org.lwjgl.opengl.GL11.glAlphaFunc;
-import static org.lwjgl.opengl.GL11C.GL_GREATER;
-import static org.lwjgl.opengl.GL11C.glEnable;
 
 public class TileRenderer {
     private HashMap<String , Texture> tileTexture;

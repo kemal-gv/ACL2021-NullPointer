@@ -24,7 +24,7 @@ public class Joueur {
     private Model model;
     private Animation texture;
     private models.Transform tr;
-
+    private int piecesCollectees;
     private Weapon w;
 
     private AABB boundingBox;
@@ -32,7 +32,7 @@ public class Joueur {
     public Joueur(int vie, int posX, int posY){
 
 
-
+        piecesCollectees=0;
         this.vie = vie;
 
         float[] vertices=new float[]{
@@ -225,5 +225,13 @@ public class Joueur {
 
     public void setAttaque(int atk){
         w.setAttaqueDegat(atk);
+    }
+
+    public void setPiecesCollectees(){
+        piecesCollectees++;
+    }
+
+    public int getPiecesCollectees(){
+        return piecesCollectees;
     }
 }

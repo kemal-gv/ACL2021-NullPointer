@@ -44,6 +44,7 @@ public class Labyrinthe {
 
     private ArrayList<Chest> chests=new ArrayList<>();
     private ArrayList<HoleTp> holes=new ArrayList<>();
+    private int piecesTotal;
 
     private static Joueur joueur;
     private Window window;
@@ -56,6 +57,7 @@ public class Labyrinthe {
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
 
+        piecesTotal=0;
 
         width=64;
         this.window=w;
@@ -133,6 +135,7 @@ public class Labyrinthe {
                         else if(t.getId()==12){
                             AnimatedTile piece=(AnimatedTile) t;
                             listEntity.add(new Entity(x,y,t));
+                            piecesTotal++;
                         }
                         else if(t.getId()==21){
                             //Ici on a un trou donc on doit tp le joueur qd il est dessus
@@ -252,6 +255,7 @@ public class Labyrinthe {
                 //pièce ici
                 //System.out.println("Pièce ramassée, un peu de point pour toi");
                 //setTile(GestionnaireTile.tiles[0], (int) (x), (int) (y));
+                joueur.setPiecesCollectees();
                 removeEntity((int)x,(int)y);
                 audio.soundCoin();
             }
@@ -642,4 +646,9 @@ public class Labyrinthe {
     public void setMonstre(List<Monstre> lm){
         listMonstres=lm;
     }
+
+    public int getPieces() {
+        return piecesTotal;
+    }
+
 }
