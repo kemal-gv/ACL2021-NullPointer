@@ -108,11 +108,29 @@ public class Game {
             hbMonstres.add(hbMonstre);
         }
 
-        Labyrinthe world = new Labyrinthe("level1",joueur,win);
+        //placement des monstres dans la salle piège
+        int X = 34;
+        int Y = -94;
+        for (int i = 0; i<10; i++){
+            int vie = 100;
+            System.out.println("vie monstre" +vie);
+            Monstre monstre = new Monstre(vie, X, Y);
+            HealthBar hbMonstre = new HealthBar(vie);
+
+            monstres.add(monstre);
+            hbMonstres.add(hbMonstre);
+            X = X + 6;
+            if (i==4){
+                X = 36;
+                Y = -104;
+            }
+        }
+
+        Labyrinthe world = new Labyrinthe("level2",joueur,win);
 
         world.setMonstre(monstres);
-     //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
-       // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
+        //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
+        // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
         //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
 
 
@@ -126,7 +144,7 @@ public class Game {
 
         for(int i=0;i<20;i++){
            // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,0);
-         //   world.setTile(tileRenderer.getGestionnaireTile().getTile(8),0,i);
+           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),0,i);
            // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),19,i);
            // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,19);
 

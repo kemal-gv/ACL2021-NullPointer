@@ -386,8 +386,8 @@ public class Labyrinthe {
 
         for(HoleTp hole:holes){
             if(hole.getPosX()==x && hole.getPosY()==-y) {
-                //On tp si il est usr un trou
-                joueur.setPos(hole.getPosX(), -hole.getTpY());
+                //On tp si il est sur un trou
+                joueur.setPos(hole.getTpX(), -hole.getTpY());
             }
         }
     }
