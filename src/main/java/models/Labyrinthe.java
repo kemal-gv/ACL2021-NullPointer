@@ -68,10 +68,6 @@ public class Labyrinthe {
         }
 
 
-        //TODO a enlever
-        // listEntity.add(joueur.getW());
-
-
         world = new Matrix4f().setTranslation(new Vector3f(0));
         world.scale(scale);
 

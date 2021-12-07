@@ -1,10 +1,11 @@
-import org.newdawn.slick.TrueTypeFont;
+package text;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 
 public class Text {
     private Font awtFont;
-    private TrueTypeFont font;
+    //private TrueTypeFont font;
 
     public Text(){
         awtFont = new Font("Times New Roman", Font.BOLD, 24);
@@ -14,7 +15,7 @@ public class Text {
 
     public Text(int size, String police){
         awtFont = new Font(police, Font.BOLD, size);
-        font = new TrueTypeFont(awtFont,false);
+        //font = new TrueTypeFont(awtFont,false);
     }
 
     public void drawString(int x, int y, String text){

@@ -28,7 +28,7 @@ public class Audio {
                 (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         gainControl.setValue(0f);
 
-        System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
+        //System.out.println(clip.getFrameLength() + " | " + clip.getFramePosition());
         clip.start();
     }
 

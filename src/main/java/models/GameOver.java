@@ -56,11 +56,11 @@ public class GameOver {
     public void update(Window win) {
         if (win.getInput().isKeyPressed(GLFW_KEY_R)) {
             continuer = true;
-            System.out.println("RRRR");
+            //System.out.println("RRRR");
         }
         if (win.getInput().isKeyPressed(GLFW_KEY_Q)) {
             continuer = false;
-            System.out.println("QQQQ");
+            //System.out.println("QQQQ");
         }
     }
 

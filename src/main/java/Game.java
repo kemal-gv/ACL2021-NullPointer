@@ -1,38 +1,33 @@
+import State.CutScene;
+import State.Digit;
 import State.Scene;
 import collision.AABB;
 import models.*;
-import org.joml.Vector3f;
-import org.lwjgl.system.CallbackI;
+import text.Text;
+import text.TrueTypeFont;
 import tiles.TileRenderer;
 import render.Camera;
 import framerate.Timer;
-import models.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-
 import org.lwjgl.opengl.GL;
-import render.Camera;
 import render.Shader;
-import render.Texture;
-import tiles.TileRenderer;
 import windows.Window;
-
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-
 public class Game {
+    private static Digit digit1,digit2,digit3,digit4,slash;
+    private static int piecesC;
+
     public static enum GameState{
         MAINMENU,GAME, WIN, GAMEOVER, CUTSCENE
     }
     public static GameState gameState = GameState.MAINMENU;
-    public static Scene sceneMainMenu,sceneWin,sceneGameOver,cutScene;
+    public static Scene sceneMainMenu,sceneWin,sceneGameOver;
+    public static CutScene cutScene;
     private static long window;
     private static Window win;
     private static Camera camera;
@@ -52,76 +47,29 @@ public class Game {
     private static final int WIDTH=1600;
     private static final int HEIGHT =900;
     private static final int FPS=60;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Window.setCallBacks();
+
         init_vue();
         init_game();
         init_scene();
         game_loop();
+
         //Clean glfw
         glfwTerminate();
     }
 
-    /*
-    public static void testInput(){
-        if(glfwGetKey(window,GLFW_KEY_E) == GL_TRUE) {
-            color_red=0.43f;
-            color_blue=1;
-        }else{
-            color_blue=0.43f;
-            color_red=1;
-        }
-
-        //0 et 1 pr les deux boutons
-        if(glfwGetMouseButton(window,0)==GL_TRUE){
-            color_blue=0;
-            color_red=0;
-        }
-
-        //Echap pr fermer la fenetre
-        if(glfwGetKey(window,GLFW_KEY_ESCAPE)==GL_TRUE){
-            glfwSetWindowShouldClose(window,true);
-        }
-    }
-
-     */
-
-    public static void testSquare(){
-        //Draw a square (test)
-        glBegin(GL_QUADS);
-
-        glTexCoord2f(0,0);
-        glVertex2f(-0.5f,0.5f);
-
-        glTexCoord2f(1,0);
-        glVertex2f(0.5f,0.5f);
-
-        glTexCoord2f(1,1);
-        glVertex2f(0.5f,-0.5f);
-
-        glTexCoord2f(0,1);
-        glVertex2f(-0.5f,-0.5f);
-        glEnd();
-        //Fin test square
-    }
-
-    /**
-     *
-     */
     public static void init_scene(){
         sceneMainMenu = new Scene("mn.png");
         sceneGameOver = new Scene("game_over.png");
         sceneWin = new Scene("succees.png");
+        cutScene = new CutScene("cut_scene.png");
     }
 
-    /**
-     *
-     */
     public static void init_game(){
         //On doit creer les textures ici après le context
 
-        joueur = new Joueur(100, 10, -3);
-        //JoueurTest jTest=new JoueurTest(100, 10, -1, new Transform());
+        joueur = new Joueur(100, 3, -3);
         monstres = new ArrayList<>();
         text = new Text();
         random = new Random();
@@ -130,7 +78,7 @@ public class Game {
             int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
             int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
             int vie = random.nextInt(100 + 1) + 1;
-            System.out.println("vie monstre" +vie);
+            //System.out.println("vie monstre" +vie);
             Monstre monstre = new Monstre(vie, randX,randY);
             HealthBar hbMonstre = new HealthBar(vie);
 
@@ -138,13 +86,12 @@ public class Game {
             hbMonstres.add(hbMonstre);
         }
 
-        world = new Labyrinthe("level1",joueur,win);
         //placement des monstres dans la salle piège
         int X = 34;
         int Y = -94;
         for (int i = 0; i < 10; i++) {
             int vie = 100;
-            System.out.println("vie monstre" + vie);
+            //System.out.println("vie monstre" + vie);
             Monstre monstre = new Monstre(vie, X, Y);
             HealthBar hbMonstre = new HealthBar(vie);
 
@@ -157,50 +104,19 @@ public class Game {
             }
         }
 
-        Labyrinthe world = new Labyrinthe("level2", joueur, win);
+        world = new Labyrinthe("level2", joueur, win);
 
         world.setMonstre(monstres);
-        //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
-        // world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,0);
-        //world.setTile(tileRenderer.getGestionnaireTile().getTile(6),0,63);
-
 
         hb = new HealthBar((int)joueur.getVie());
-        //world.setTile(tileRenderer.getGestionnaireTile().getTile(1),0,0);
 
-
-        //Test setup world
-        // //Coin haut gauche
-        //world.setTile(tileRenderer.getGestionnaireTile().getTile(4),0,0);
-/*
-        for(int i=0;i<20;i++){
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,0);
-         //   world.setTile(tileRenderer.getGestionnaireTile().getTile(8),0,i);
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),19,i);
-           // world.setTile(tileRenderer.getGestionnaireTile().getTile(8),i,19);
-        }
-*/
-      /*  //world.setTile(tileRenderer.getGestionnaireTile().getTile(2),0,19);
-
-        // Texture tex=new Texture(("groundEarth_checkered.png"));
-        // Texture tex=new Texture(("groundExit.png"));
-        // Texture tex=new Texture(("test.png"));
-*/
         //Creation d'un shader
         shader= new Shader("shader");
 
-        // Matrix4f projection= new Matrix4f().ortho2D(-WIDTH/2,WIDTH/2, -HEIGHT /2,HEIGHT /2);
         scale = new Matrix4f()
-                //.translate(new Vector3f(100,0,0))//Pour modifier la position de notre image
                 .scale(16);
         target = new Matrix4f();
 
-       /* // projection.mul(scale,target);//Projection*scale = target
-
-
-        //Test camera position
-        //camera.setPosition(new Vector3f(-100,0,0));//pr mettre l'image de nouvea au centre (quand on a fait le translate plus haut)
-*/
         //Gérer les fps
         frameCap = 1.0/FPS;// X sec / Nb fps ici 60images par 1 seconde   cb on veut de fps
         time = Timer.getTime();
@@ -208,7 +124,6 @@ public class Game {
 
         frameTime=0;
         frames=0;
-
 
         i = 1;
     }
@@ -222,7 +137,6 @@ public class Game {
         else
             System.out.println("pas inters");
 
-
         //On initialise GLFW
         if(!glfwInit()){
             //throw new IllegalStateException("Erreur dans l'initialisation de  GLFW");
@@ -233,27 +147,12 @@ public class Game {
         glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
         win= new Window();
         win.setSize(WIDTH,HEIGHT);
-        // win.setFullscreen(true);
-        win.createWindow("Game");
         //Creation de la fenetre
-        //  window=glfwCreateWindow(WIDTH, HEIGHT,"NullPointer'",0,0);
-        // glfwShowWindow(window);
-
-        //glfwMakeContextCurrent(window);
-        //if(window==0) {
-        //  throw new IllegalStateException("Erreur dans la création de la fenêtre");
-        // }
-
-        //
-        //GLFWVidMode videoMode= glfwGetVideoMode(glfwGetPrimaryMonitor());
-        //On place la fenêtre au milieu
-        //glfwSetWindowPos(window,(videoMode.width() - WIDTH)/2, (videoMode.height() - HEIGHT)/2);
-
-        //   glfwShowWindow(window);
+        win.createWindow("SkullQuest");
 
         //Create a context
-        //glfwMakeContextCurrent(window);//I need a context to display graphics
         GL.createCapabilities();
+
         //Camera
         camera= new Camera(win.getWidth(),win.getWidth());
         glEnable(GL_TEXTURE_2D);
@@ -267,7 +166,7 @@ public class Game {
         }
     }
 
-    public static void game_loop(){
+    public static void game_loop() throws Exception {
         while(!win.shouldClose()){
 
             audio.soundSword(win);
@@ -280,63 +179,38 @@ public class Game {
             time = time2;//To avoid the game goes exponentially faster
             while(unprocessed >= frameCap){
                 if(win.getInput().isKeyPressed(GLFW_KEY_ESCAPE)){
-                    //if(win.getInput().isMouseButtonDown(0)){//0=left click 1=right click 2=scroll button
                     glfwSetWindowShouldClose(win.getWindow(),true);
                 }
-                /*
-                if(win.getInput().isKeyDown(GLFW_KEY_LEFT)){
-                    camera.getPosition().sub(new Vector3f(-10,0,0));
-                }
-                if(win.getInput().isKeyDown(GLFW_KEY_RIGHT)){
-                    camera.getPosition().sub(new Vector3f(10,0,0));
-                }
-                if(win.getInput().isKeyDown(GLFW_KEY_UP)){
-                    camera.getPosition().sub(new Vector3f(0,10,0));
-                }
-                if(win.getInput().isKeyDown(GLFW_KEY_DOWN)){
-                    camera.getPosition().sub(new Vector3f(0,-10,0));
-                }
-
-                 */
 
                 //Tout ce qui n'a rien a voir avec le rendering est ici
                 unprocessed-=frameCap;
                 canRender=true;
                 target=scale;
-                //Test input
-                //testInput();
-                //Fin test input
-
-                //Update tant que la fenetre ne veut pas se fermer
-                //glfwPollEvents();
-
-                //joueur.update((float) frameCap, win, camera, world);
 
                 text.drawString(0,0,"HELLO TOI");
-                //
+
                 switch (gameState){
                     case MAINMENU:
+
                         if(sceneMainMenu.input(win))
-                            gameState=GameState.GAME;
+                            gameState=GameState.CUTSCENE;
                         break;
                     case CUTSCENE:
-
+                        if(cutScene.input(win))
+                            gameState=GameState.GAME;
                         break;
                     case GAME:
-                        if(joueur.getPiecesCollectees()==world.getPieces())
-                            gameState=GameState.WIN;
+                        if(joueur.getPiecesCollectees()==world.getPieces()) {
+                            piecesC = joueur.getPiecesCollectees();
+                            gameState = GameState.WIN;
+                        }
                         else
                         {
-                            if(joueur.getVie()<=0)
-                                gameState=GameState.GAMEOVER;
-                            if (i%17==0) {
-                            /*
-                            for (Map.Entry entry : monstres.entrySet()){
-                                Monstre m = (Monstre) entry.getValue();
-                                m.deplacementAleatoire((float) frameCap, win, camera, world);
+                            if(joueur.getVie()<=0) {
+                                piecesC = joueur.getPiecesCollectees();
+                                gameState = GameState.GAMEOVER;
                             }
-
-                            */
+                            if (i%17==0) {
                                 for (Monstre m : monstres){
                                     if(m.getVie()>0)
                                         m.deplacementAleatoire((float) frameCap, win, camera, world);
@@ -358,25 +232,25 @@ public class Game {
                         }
                         break;
                     case GAMEOVER:
+
                         if(sceneGameOver.input(win))
                             gameState=GameState.GAME;
                             init_game();
                         break;
                     case WIN:
+
                         if(sceneWin.input(win))
                             gameState=GameState.GAME;
                             init_game();
                         break;
 
                 }
-                //jTest.deplacement((float)frameCap,win,camera,world);
-                //vie du joueur infèrieur à 0
+
                 world.correctCamera(camera,win);
                 win.update();
 
                 if(frameTime >= 1.0){//Every secon we print how much frame we have
                     frameTime=0;
-                    //System.out.println("FPS : "+frames);
                     frames=0;
 
                 }
@@ -384,7 +258,7 @@ public class Game {
             }
 
             if(canRender){
-                if(monstres.size()==0){
+                /*if(monstres.size()==0){
                     monstres = new ArrayList<>();
                     random = new Random();
                     hbMonstres = new ArrayList<>();
@@ -392,37 +266,25 @@ public class Game {
                         int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
                         int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
                         int vie = random.nextInt(100 + 1) + 1;
-                        //System.out.println("vie monstre" +vie);
                         Monstre monstre = new Monstre(vie, randX,randY);
                         HealthBar hbMonstre = new HealthBar(vie);
                         monstres.add(monstre);
                         hbMonstres.add(hbMonstre);
                     }
 
-                    world = new Labyrinthe("level0",joueur,win);
+                    world = new Labyrinthe("level2",joueur,win);
                     //SEt point de spawn joueur
                     joueur.setPos(3,-3);
                     world.setMonstre(monstres);
-                }
+                }*/
                 glClear(GL_COLOR_BUFFER_BIT);// ? Set every pixel to black ? pas sur
-                //tex.bind(0);
 
-
-
-                //shader.bind();
-                // shader.setUniform("sampler",0);
-                //shader.setUniform("projection",camera.getProjection().mul(target));
-                //model.render();
-
-                // testSquare();
-
-                //Rendering tile
-
-                //mn.update();
-                //mn.render(shader,camera);
                 switch (gameState){
                     case MAINMENU:
                         sceneMainMenu.render(shader,camera);
+                        break;
+                    case CUTSCENE:
+                        cutScene.render(shader,camera);
                         break;
                     case GAME:
                         world.render(tileRenderer,shader,camera);
@@ -436,70 +298,49 @@ public class Game {
                         }
                         joueur.render(shader, camera);
                         hb.render(shader);
+                        test_text();
                         break;
                     case WIN:
+                        score();
                         camera= new Camera(win.getWidth(),win.getWidth());
                         world.correctCamera(camera,win);
                         sceneWin.render(shader,camera);
+                        score_render(shader,camera);
                         break;
                     case GAMEOVER:
+                        score();
                         camera= new Camera(win.getWidth(),win.getWidth());
                         world.correctCamera(camera,win);
                         sceneGameOver.render(shader,camera);
+                        score_render(shader,camera);
                         break;
-
                 }
-                // jTest.render(shader,camera,world);
-                //jTest.setPos(10,-3);
                 win.swapBuffers();
                 frames++;
-
             }
-
         }
     }
 
-    /*
-    public static void testInput(){
-        if(glfwGetKey(window,GLFW_KEY_E) == GL_TRUE) {
-            color_red=0.43f;
-            color_blue=1;
-        }else{
-            color_blue=0.43f;
-            color_red=1;
-        }
-
-        //0 et 1 pr les deux boutons
-        if(glfwGetMouseButton(window,0)==GL_TRUE){
-            color_blue=0;
-            color_red=0;
-        }
-
-        //Echap pr fermer la fenetre
-        if(glfwGetKey(window,GLFW_KEY_ESCAPE)==GL_TRUE){
-            glfwSetWindowShouldClose(window,true);
-        }
+    public static void test_text() throws Exception {
+        TrueTypeFont font = new TrueTypeFont("C:\\Users\\admin\\IdeaProjects\\ACL2021-NullPointer\\src\\main\\resources\\font\\Minecraft.ttf");
+        font.drawBitmap(0, 0);
+        font.drawText("HALLO World ! ;-)", 50, 100);
     }
 
-     */
-
-    public static void testSquare() {
-        //Draw a square (test)
-        glBegin(GL_QUADS);
-
-        glTexCoord2f(0, 0);
-        glVertex2f(-0.5f, 0.5f);
-
-        glTexCoord2f(1, 0);
-        glVertex2f(0.5f, 0.5f);
-
-        glTexCoord2f(1, 1);
-        glVertex2f(0.5f, -0.5f);
-
-        glTexCoord2f(0, 1);
-        glVertex2f(-0.5f, -0.5f);
-        glEnd();
-        //Fin test square
+    public static void score(){
+        digit1 = new Digit(piecesC/10,0);
+        digit2 = new Digit(piecesC%10,5f);
+        System.out.println(piecesC);
+        slash = new Digit("slash",10f);
+        digit3 = new Digit(world.getPieces()/10,15f);
+        digit4 = new Digit(world.getPieces()%10,20f);
     }
 
+    public static void score_render(Shader shader, Camera camera){
+        digit1.render(shader,camera);
+        digit2.render(shader,camera);
+        slash.render(shader, camera);
+        digit3.render(shader, camera);
+        digit4.render(shader, camera);
+    }
 }

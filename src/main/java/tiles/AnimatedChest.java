@@ -38,7 +38,7 @@ public class AnimatedChest extends AnimatedTile {
                     c.setOpen(true);
                     c.setAnimation(false);
                     isOpened = true;
-                    System.out.println("IS OPEN");
+                    //System.out.println("IS OPEN");
                 }
             }
         }

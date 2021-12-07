@@ -34,7 +34,7 @@ public class Window {
         window = glfwCreateWindow(width, height, title, fullscreen ? glfwGetPrimaryMonitor() : 0, 0);
 
         if (window == 0) {
-            System.out.println("d = " + nglfwGetError(window));
+            //System.out.println("d = " + nglfwGetError(window));
             throw new IllegalStateException("erreur dans la création de la fenetre : " + title);
         }
         if (!fullscreen) {
