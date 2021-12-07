@@ -2,21 +2,22 @@ import State.CutScene;
 import State.Digit;
 import State.Scene;
 import collision.AABB;
-import models.*;
-import text.Text;
-import text.TrueTypeFont;
-import tiles.TileRenderer;
-import render.Camera;
 import framerate.Timer;
+import models.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL;
+import render.Camera;
 import render.Shader;
+import text.Text;
+import tiles.TileRenderer;
 import windows.Window;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
     private static Digit digit1,digit2,digit3,digit4,slash;
@@ -74,12 +75,12 @@ public class Game {
         text = new Text();
         random = new Random();
         hbMonstres = new ArrayList<>();
-        for (int i = 0; i<4; i++){
+        for (int i = 0; i < 10; i++) {
             int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
             int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
-            int vie = random.nextInt(100 + 1) + 1;
+            int vie = 100;//random.nextInt(100 + 1) + 1;
             //System.out.println("vie monstre" +vie);
-            Monstre monstre = new Monstre(vie, randX,randY);
+            Monstre monstre = new Monstre(vie, randX, randY);
             HealthBar hbMonstre = new HealthBar(vie);
 
             monstres.add(monstre);
@@ -132,10 +133,6 @@ public class Game {
         AABB box1= new AABB(new Vector2f(0,0),new Vector2f(1,1));
         AABB box2= new AABB(new Vector2f(0,0),new Vector2f(1,1));
 
-        if (box1.getCollisionInter(box2))
-            System.out.println("INTERSECTION");
-        else
-            System.out.println("pas inters");
 
         //On initialise GLFW
         if(!glfwInit()){
@@ -298,7 +295,7 @@ public class Game {
                         }
                         joueur.render(shader, camera);
                         hb.render(shader);
-                        test_text();
+                        //test_text();
                         break;
                     case WIN:
                         score();
@@ -321,16 +318,19 @@ public class Game {
         }
     }
 
+    /*
     public static void test_text() throws Exception {
         TrueTypeFont font = new TrueTypeFont("C:\\Users\\admin\\IdeaProjects\\ACL2021-NullPointer\\src\\main\\resources\\font\\Minecraft.ttf");
         font.drawBitmap(0, 0);
         font.drawText("HALLO World ! ;-)", 50, 100);
     }
 
+     */
+
     public static void score(){
         digit1 = new Digit(piecesC/10,0);
         digit2 = new Digit(piecesC%10,5f);
-        System.out.println(piecesC);
+        //System.out.println(piecesC);
         slash = new Digit("slash",10f);
         digit3 = new Digit(world.getPieces()/10,15f);
         digit4 = new Digit(world.getPieces()%10,20f);

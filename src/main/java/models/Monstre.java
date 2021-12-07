@@ -333,31 +333,33 @@ public class Monstre {
         int posx = (int) Math.ceil(((((getPosX() / 2) + 0.5f) - (5 / 2))));
         int posy = (int) Math.ceil(((((-getPosY() / 2) + 0.5f) - (5 / 2))));
 
-        discovered[posy][posx] = true;
-        queue.add(new Node(cx, cy, null));
+        if (posx < 64 && posy < 64 && posx >= 0 && posy >= 0) {
+            discovered[posy][posx] = true;
+            queue.add(new Node(cx, cy, null));
 
-        while (!queue.isEmpty()) {
-            Node node = queue.poll();
+            while (!queue.isEmpty()) {
+                Node node = queue.poll();
 
-            // Go breath-first into each direction
-            for (Direction dir : Direction.values()) {
-                int newX = node.x + dir.getDx();
-                int newY = node.y + dir.getDy();
-                Direction newDir = node.initialDir == null ? dir : node.initialDir;
+                // Go breath-first into each direction
+                for (Direction dir : Direction.values()) {
+                    int newX = node.x + dir.getDx();
+                    int newY = node.y + dir.getDy();
+                    Direction newDir = node.initialDir == null ? dir : node.initialDir;
 
-                // Mouse found?
-                if (newX == mx && newY == my) {
-                    return newDir;
-                }
-
-                // Is there a path in the direction (= is it a free field in the labyrinth)?
-                // And has that field not yet been discovered?
-                if (newY >= 0 && newX >= 0 && newY < 64 && newX < 64)
-                    if (!lab[newY][newX] && !discovered[newY][newX]) {
-                        // "Discover" and enqueue that field
-                        discovered[newY][newX] = true;
-                        queue.add(new Node(newX, newY, newDir));
+                    // Mouse found?
+                    if (newX == mx && newY == my) {
+                        return newDir;
                     }
+
+                    // Is there a path in the direction (= is it a free field in the labyrinth)?
+                    // And has that field not yet been discovered?
+                    if (newY >= 0 && newX >= 0 && newY < 64 && newX < 64)
+                        if (!lab[newY][newX] && !discovered[newY][newX]) {
+                            // "Discover" and enqueue that field
+                            discovered[newY][newX] = true;
+                            queue.add(new Node(newX, newY, newDir));
+                        }
+                }
             }
         }
         return null;
