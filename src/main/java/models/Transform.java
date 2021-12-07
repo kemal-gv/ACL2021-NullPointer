@@ -1,6 +1,5 @@
 package models;
 
-import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -8,18 +7,17 @@ public class Transform {
     public Vector3f pos;
     public Vector3f scale;
 
-    public Transform(){
+    public Transform() {
         pos = new Vector3f();
-        scale = new Vector3f(1,1,1);
+        scale = new Vector3f(1, 1, 1);
     }
 
-    public Matrix4f getProjection(Matrix4f cible){
+    public Matrix4f getProjection(Matrix4f cible) {
         cible.scale(scale);
         cible.translate(pos);
 
         return cible;
     }
-
 
 
     public void setScale(Vector3f scale) {

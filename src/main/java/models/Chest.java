@@ -6,19 +6,19 @@ public class Chest {
     private int posx;
     private int posy;
     private String item;
-    private boolean isOpen=false;
+    private boolean isOpen = false;
     private AnimatedChest ac;
-    private boolean empty=false;
+    private boolean empty = false;
 
 
-    public Chest(int posx, int posy, String item, AnimatedChest ac){
-        this.posx=posx;
-        this.posy=posy;
-        this.item=item;
-        this.ac=ac;
+    public Chest(int posx, int posy, String item, AnimatedChest ac) {
+        this.posx = posx;
+        this.posy = posy;
+        this.item = item;
+        this.ac = ac;
     }
 
-    public AnimatedChest getAc(){
+    public AnimatedChest getAc() {
         return ac;
     }
 
@@ -58,10 +58,10 @@ public class Chest {
         this.empty = empty;
     }
 
-    private boolean animation=false;
+    private boolean animation = false;
 
-    public void setAnimation(boolean b){
-        animation=b;
+    public void setAnimation(boolean b) {
+        animation = b;
     }
 
     public boolean getAnimation() {

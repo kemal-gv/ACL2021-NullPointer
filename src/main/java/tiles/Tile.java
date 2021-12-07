@@ -3,20 +3,20 @@ package tiles;
 public class Tile {
 
 
-   // public static final Tile testTile = new Tile(0,"groundEarth_checkered");
+    // public static final Tile testTile = new Tile(0,"groundEarth_checkered");
 
     protected int id;
     protected String texture;
     protected boolean solid;
-    protected boolean animated=false;
+    protected boolean animated = false;
 
-    public Tile(int id, String texture){
-        this.id=id;
-        this.texture=texture;
-        this.solid=false;
+    public Tile(int id, String texture) {
+        this.id = id;
+        this.texture = texture;
+        this.solid = false;
     }
 
-    public void setWalls(){
+    public void setWalls() {
 
     }
 
@@ -29,9 +29,11 @@ public class Tile {
     }
 
     public Tile setSolid() {
-        solid = true;return this;
+        solid = true;
+        return this;
     }
-    public boolean isSolid(){
+
+    public boolean isSolid() {
         return solid;
     }
 
@@ -43,15 +45,15 @@ public class Tile {
         this.animated = animated;
     }
 
-    public Tile getTile(){
-        Tile newT=new Tile(id,texture);
-        if(newT.isSolid()){
+    public Tile getTile() {
+        Tile newT = new Tile(id, texture);
+        if (newT.isSolid()) {
             newT.setSolid();
         }
         return newT;
     }
 
-    public void bind(){
+    public void bind() {
 
     }
 

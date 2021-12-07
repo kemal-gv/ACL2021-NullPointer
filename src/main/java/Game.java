@@ -6,21 +6,26 @@ import org.lwjgl.system.CallbackI;
 import tiles.TileRenderer;
 import render.Camera;
 import framerate.Timer;
+import models.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.newdawn.slick.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL;
+import render.Camera;
 import render.Shader;
 import render.Texture;
+import tiles.TileRenderer;
 import windows.Window;
 
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
     public static enum GameState{
@@ -134,6 +139,25 @@ public class Game {
         }
 
         world = new Labyrinthe("level1",joueur,win);
+        //placement des monstres dans la salle piège
+        int X = 34;
+        int Y = -94;
+        for (int i = 0; i < 10; i++) {
+            int vie = 100;
+            System.out.println("vie monstre" + vie);
+            Monstre monstre = new Monstre(vie, X, Y);
+            HealthBar hbMonstre = new HealthBar(vie);
+
+            monstres.add(monstre);
+            hbMonstres.add(hbMonstre);
+            X = X + 6;
+            if (i == 4) {
+                X = 36;
+                Y = -104;
+            }
+        }
+
+        Labyrinthe world = new Labyrinthe("level2", joueur, win);
 
         world.setMonstre(monstres);
         //   world.setTile(tileRenderer.getGestionnaireTile().getTile(6),3,3);
@@ -248,8 +272,8 @@ public class Game {
 
             audio.soundSword(win);
 
-            boolean canRender=false;
-            double time2=Timer.getTime();
+            boolean canRender = false;
+            double time2 = Timer.getTime();
             double passed = time2 - time;
             unprocessed+=passed;//Temps que le jeu n'a pas ete traité
             frameTime+=passed;
@@ -364,7 +388,7 @@ public class Game {
                     monstres = new ArrayList<>();
                     random = new Random();
                     hbMonstres = new ArrayList<>();
-                    for ( i = 0; i<20; i++){
+                    for (i = 0; i < 20; i++) {
                         int randX = random.nextInt(50 + 10) + 10; // max 50 ; min 10
                         int randY = -random.nextInt(50 + 10) - 10; // max -10 ; min -50
                         int vie = random.nextInt(100 + 1) + 1;
@@ -434,4 +458,48 @@ public class Game {
 
         }
     }
+
+    /*
+    public static void testInput(){
+        if(glfwGetKey(window,GLFW_KEY_E) == GL_TRUE) {
+            color_red=0.43f;
+            color_blue=1;
+        }else{
+            color_blue=0.43f;
+            color_red=1;
+        }
+
+        //0 et 1 pr les deux boutons
+        if(glfwGetMouseButton(window,0)==GL_TRUE){
+            color_blue=0;
+            color_red=0;
+        }
+
+        //Echap pr fermer la fenetre
+        if(glfwGetKey(window,GLFW_KEY_ESCAPE)==GL_TRUE){
+            glfwSetWindowShouldClose(window,true);
+        }
+    }
+
+     */
+
+    public static void testSquare() {
+        //Draw a square (test)
+        glBegin(GL_QUADS);
+
+        glTexCoord2f(0, 0);
+        glVertex2f(-0.5f, 0.5f);
+
+        glTexCoord2f(1, 0);
+        glVertex2f(0.5f, 0.5f);
+
+        glTexCoord2f(1, 1);
+        glVertex2f(0.5f, -0.5f);
+
+        glTexCoord2f(0, 1);
+        glVertex2f(-0.5f, -0.5f);
+        glEnd();
+        //Fin test square
+    }
+
 }

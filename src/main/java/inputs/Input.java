@@ -17,43 +17,43 @@ public class Input {
             331, 332, 333, 334, 335, 336, 340, 341, 342, 343, 344, 345, 346, 347, 348
     };
 
-    List<Integer> validKeyList=new ArrayList<Integer>();
+    List<Integer> validKeyList = new ArrayList<Integer>();
 
     private long window;
-    public Input(long win){
-        for(int i=0;i<validKeys.length;i++){
+
+    public Input(long win) {
+        for (int i = 0; i < validKeys.length; i++) {
             validKeyList.add(validKeys[i]);
         }
 
 
-
-        this.window=win;
-        keys=new boolean[GLFW_KEY_LAST];
-        for(int i=0;i<keys.length;i++){
-            keys[i]=false;
+        this.window = win;
+        keys = new boolean[GLFW_KEY_LAST];
+        for (int i = 0; i < keys.length; i++) {
+            keys[i] = false;
         }
     }
 
-    public boolean isKeyDown(int key){
-        return glfwGetKey(window,key)==1;
+    public boolean isKeyDown(int key) {
+        return glfwGetKey(window, key) == 1;
     }
 
-    public boolean isMouseButtonDown(int button){
-        return glfwGetMouseButton(window,button)==1;
+    public boolean isMouseButtonDown(int button) {
+        return glfwGetMouseButton(window, button) == 1;
     }
 
-    public boolean isKeyPressed(int key){
+    public boolean isKeyPressed(int key) {
         return (isKeyDown(key) && !keys[key]);
     }
 
-    public void update(){
-        for(int i=0;i<keys.length;i++){
-            if(validKeyList.contains(i))
-                keys[i]=isKeyDown(i);
+    public void update() {
+        for (int i = 0; i < keys.length; i++) {
+            if (validKeyList.contains(i))
+                keys[i] = isKeyDown(i);
         }
     }
 
-    public boolean isKeyReleased(int key){
+    public boolean isKeyReleased(int key) {
         return (!isKeyDown(key) && keys[key]);
     }
 }

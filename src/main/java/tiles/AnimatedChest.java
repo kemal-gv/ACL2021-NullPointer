@@ -3,49 +3,48 @@ package tiles;
 import framerate.Timer;
 import models.Chest;
 
-public class AnimatedChest extends AnimatedTile{
+public class AnimatedChest extends AnimatedTile {
 
     private String item;
 
     private Chest c;
 
 
-
     public AnimatedChest(int id, String texture, String filename, int amount, int fps, boolean cooldown) {
         super(id, texture, filename, amount, fps, cooldown);
-        item="Waw";
-        this.texturePointer=0;
+        item = "Waw";
+        this.texturePointer = 0;
     }
 
-    public String getItem(){
+    public String getItem() {
         return item;
     }
 
 
+    private boolean isOpened = false;
 
-    private boolean isOpened=false;
     @Override
     public void bind(int sampler) {
         this.currentTime = Timer.getTime();
         this.elapsedTime += currentTime - lastTime;
 
         if (elapsedTime >= fps) {
-            if(open && c.getAnimation()) {
+            if (open && c.getAnimation()) {
 
                 elapsedTime = 0;
                 texturePointer++;
 
-                if(texturePointer==frames.length-1){
+                if (texturePointer == frames.length - 1) {
                     c.setOpen(true);
                     c.setAnimation(false);
-                    isOpened=true;
+                    isOpened = true;
                     System.out.println("IS OPEN");
                 }
             }
         }
 
         if (texturePointer >= frames.length) {
-            texturePointer = frames.length-1;
+            texturePointer = frames.length - 1;
         }
 
         this.lastTime = currentTime;
@@ -53,9 +52,9 @@ public class AnimatedChest extends AnimatedTile{
         frames[texturePointer].bind(sampler);
     }
 
-    public void setOpen(){
-        texturePointer=0;
-            open=true;
+    public void setOpen() {
+        texturePointer = 0;
+        open = true;
     }
 
 
@@ -63,9 +62,9 @@ public class AnimatedChest extends AnimatedTile{
         return isOpened;
     }
 
-    public AnimatedChest getTile()  {
-        AnimatedChest tile=new  AnimatedChest(id,  texture,  fileName,  amount,  (int)fps,  cooldown);
-        if(tile.isSolid()){
+    public AnimatedChest getTile() {
+        AnimatedChest tile = new AnimatedChest(id, texture, fileName, amount, (int) fps, cooldown);
+        if (tile.isSolid()) {
             tile.setSolid();
         }
         return tile;
