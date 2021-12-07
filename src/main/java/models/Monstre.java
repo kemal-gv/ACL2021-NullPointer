@@ -339,7 +339,6 @@ public class Monstre {
 
             while (!queue.isEmpty()) {
                 Node node = queue.poll();
-
                 // Go breath-first into each direction
                 for (Direction dir : Direction.values()) {
                     int newX = node.x + dir.getDx();
