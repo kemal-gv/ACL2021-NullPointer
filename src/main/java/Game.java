@@ -8,6 +8,7 @@ import render.Camera;
 import framerate.Timer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.newdawn.slick.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -17,6 +18,7 @@ import render.Shader;
 import render.Texture;
 import windows.Window;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,6 +40,7 @@ public class Game {
     private static HealthBar hb;
     private static Shader shader;
     private static Audio audio;
+    private static Text text;
     private static double frameCap,time,unprocessed,frameTime;
     private static Matrix4f scale,target;
     private static int frames,i;
@@ -114,8 +117,8 @@ public class Game {
 
         joueur = new Joueur(100, 10, -3);
         //JoueurTest jTest=new JoueurTest(100, 10, -1, new Transform());
-
         monstres = new ArrayList<>();
+        text = new Text();
         random = new Random();
         hbMonstres = new ArrayList<>();
         for (int i = 0; i<4; i++){
@@ -182,12 +185,7 @@ public class Game {
         frameTime=0;
         frames=0;
 
-        audio = new Audio();
-        try {
-            audio.play("ruins");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         i = 1;
     }
 
@@ -236,6 +234,13 @@ public class Game {
         camera= new Camera(win.getWidth(),win.getWidth());
         glEnable(GL_TEXTURE_2D);
         tileRenderer=new TileRenderer();
+
+        audio = new Audio();
+        try {
+            audio.play("ruins");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void game_loop(){
@@ -283,7 +288,7 @@ public class Game {
 
                 //joueur.update((float) frameCap, win, camera, world);
 
-
+                text.drawString(0,0,"HELLO TOI");
                 //
                 switch (gameState){
                     case MAINMENU:
@@ -291,7 +296,7 @@ public class Game {
                             gameState=GameState.GAME;
                         break;
                     case CUTSCENE:
-                        
+
                         break;
                     case GAME:
                         if(joueur.getPiecesCollectees()==world.getPieces())
