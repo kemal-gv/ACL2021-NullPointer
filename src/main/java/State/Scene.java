@@ -3,7 +3,6 @@ package State;
 import button.ManagerButton;
 import models.Transform;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 import render.Camera;
 import render.Shader;
 import render.Texture;
@@ -21,8 +20,8 @@ public class Scene {
 
     public Scene(String str){
         background =  new Texture(str);
-        playManagerButton = new ManagerButton("jouer_select.png","jouer.png",true,0);
-        quitManagerButton = new ManagerButton("quitter_select.png","quitter.png",false,0.8f);
+        playManagerButton = new ManagerButton("button/jouer_select.png", "button/jouer.png",true,0);
+        quitManagerButton = new ManagerButton("button/quitter_select.png", "button/quitter.png",false,0.8f);
         float[] vertices=new float[]{
                 0f,0f,0,//TOP LEFT     0
                 1.7f,0f,0,//TOP RIGHT     1

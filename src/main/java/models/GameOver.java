@@ -46,7 +46,7 @@ public class GameOver {
                 2, 3, 0
         };
         model = new Model(vertices, texture, indices);
-        this.texture = new Texture("die_screen.png");
+        this.texture = new Texture("scene/die_screen.png");
         continuer = true;
         tr = new Transform();
         tr.scale = new Vector3f(1, 1, 1);

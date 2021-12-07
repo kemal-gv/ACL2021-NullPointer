@@ -60,10 +60,10 @@ public class Game {
     }
 
     public static void init_scene(){
-        sceneMainMenu = new Scene("mn.png");
-        sceneGameOver = new Scene("game_over.png");
-        sceneWin = new Scene("succees.png");
-        cutScene = new CutScene("cut_scene.png");
+        sceneMainMenu = new Scene("scene/mn.png");
+        sceneGameOver = new Scene("scene/game_over.png");
+        sceneWin = new Scene("scene/succees.png");
+        cutScene = new CutScene("scene/cut_scene.png");
     }
 
     public static void init_game(){
